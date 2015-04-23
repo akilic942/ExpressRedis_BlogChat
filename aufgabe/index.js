@@ -2,5 +2,7 @@ var fs = require('fs');
 
 
 
-fs.readFile(_dirname+"a.json")
+fs.readFile(_dirname+"a.json");
+
+
 
