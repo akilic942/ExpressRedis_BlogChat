@@ -1,0 +1,22 @@
+{
+  "name": "Wolkenkratzer",
+  "version": "1.0.0",
+  "description": "Workshop Aufgabe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8.git"
+  },
+  "keywords": [
+    "aufgabe"
+  ],
+  "author": "Aziz, Meryem, Aylin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8/issues"
+  },
+  "homepage": "https://github.com/kaneda942/WBA2-SoSe15-T8"
+}
