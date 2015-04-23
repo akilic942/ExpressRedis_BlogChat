@@ -1,0 +1,25 @@
+{
+  "name": "beste",
+  "version": "0.0.1",
+  "description": "Bestes Projekt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8.git"
+  },
+  "keywords": [
+    "wba2"
+  ],
+  "author": "Aziz, Meryem, Aylin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8/issues"
+  },
+  "homepage": "https://github.com/kaneda942/WBA2-SoSe15-T8",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
+}
