@@ -12,7 +12,7 @@ fs.readFile(__dirname+"a.json", function(err, data){
 
 for (var i = 0; i < data.a.length; i++) {
   console.log("Name: " + data.a[i].name + "\n" + "Stadt" + data.a[i].stadt + "\n" + "Hoehe: " + data.a[i].hoehe + "\n" + "--------------------")}
-});
+);
 
 fs.writeFile( savedata, JSON.stringify(file, null, 6), function(err) {
   
@@ -26,3 +26,5 @@ if(err){
   }
   
 });
+
+}
