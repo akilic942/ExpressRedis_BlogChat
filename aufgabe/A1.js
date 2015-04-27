@@ -1,12 +1,20 @@
 var fs = require('fs');
 
-var file = __dirname + "wolkenkratzer.json";
+var file = __dirname + "/JSON/wolkenkratzer.json";
 
-fs.readFile('wolkenkratzer.json', function(err, data){
+
+fs.readFile(file, function(err, data){
   if(err) throw err;
    else { var obj = JSON.parse(data)  ;
-        }
-
-    console.log(obj.wolkenkratzer.Name);
+        } 
+    
+   obj.wolkenkratzer.forEach(function (a) {
+       console.log("Name: " + a.name);
+       console.log("Stadt: " + a.stadt);
+       console.log("Hoehe: " + a.hoehe);
+       console.log("--------");
+       console.log();
+   })
 });
 
+ 
