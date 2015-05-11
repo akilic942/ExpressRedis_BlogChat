@@ -17,12 +17,12 @@ fs.readFile(file, function(err, data){
     });
        
          var speicher = JSON.stringify(datei.wolkenkratzer);
-         fs.writefile('wolkenkratzer_sortiert.json', datei.wolkenkratzer, function(err){ if (err) throw err});
+         fs.writeFile('wolkenkratzer_sortiert.json', datei.wolkenkratzer, function(err){ if (err) throw err});
         }
 });
     
    function wolkenkratzerAusgabe(name, stadt, hoehe) {
-       console.log("Name: " + chalk.green(name));
+       console.log("Name: " + chalk.grey(name));
        console.log("Stadt: " + chalk.magenta(stadt));
        console.log("Hoehe: " + chalk.cyan(hoehe)); 
    }
