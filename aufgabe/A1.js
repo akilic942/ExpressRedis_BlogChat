@@ -1,3 +1,4 @@
+
 var fs = require('fs');
 var chalk = require('chalk');
 
@@ -17,7 +18,9 @@ fs.readFile(file, function(err, data){
     });
        
          var speicher = JSON.stringify(datei.wolkenkratzer);
-         fs.writeFile('wolkenkratzer_sortiert.json', datei.wolkenkratzer, function(err){ if (err) throw err});
+         
+         fs.writeFile('wolkenkratzer_sortiert.json', speicher, function(err){ 
+             if (err) throw err});
         }
 });
     
