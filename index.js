@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 
 app.get('/rezepte/:id', function(req, res){
    res.status(200).send('rezepte ' + req.params.id);
-    // if ID nicht da -> push ?
+    // if ID nicht da -> push ? TEST
 });
 
 
