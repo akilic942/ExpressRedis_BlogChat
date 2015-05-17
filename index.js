@@ -14,14 +14,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/rezepte/:id', function(req, res){
-    res.status(200);
-    var param = req.params.id;
-    fs.readFile(datadir + param +'.json', function(err, data){
+    res.status(200).json(fs.readFile(datadir + req.params.id +'.json', function(err, data){
     if(err) throw err;
     else {
         var data = JSON.parse(data);        
-    }
-  });
+    };
+  })
+);
 });
 
 
