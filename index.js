@@ -1,10 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var app = express();
-var jsonParser = bodyParser.json();     // Teil des bodyParsers.. gibt Parser zurück der mit json Datein arbeitet
+var jsonParser = bodyParser.json();     
 
-var file = __dirname + "DATA.json";
+var datadir = __dirname + '/DATA/';
+
 
 
 app.get('/', function(req, res){
@@ -12,10 +14,16 @@ app.get('/', function(req, res){
 });
 
 app.get('/rezepte/:id', function(req, res){
-   res.status(200).send('rezepte ' + req.params.id);
-    // if ID nicht da -> push ? TEST
+    res.status(200);
+    var param = req.params.id;
+    fs.readFile(datadir + param +'.json', function(err, data){
+    if(err) throw err;
+    else {
+        var data = JSON.parse(data);        
+    }
+  });
 });
 
 
 
-app.listen(1939);
+app.listen(3080,"localhost");
