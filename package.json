@@ -2,7 +2,7 @@
   "name": "auf2",
   "version": "0.0.1",
   "description": "auf 2",
-  "main": "A2.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,0 +1,21 @@
+{
+    {
+    "Name": "Kuchen - echt toll"
+    "Autor": "Irgendjemand"
+    "Zutaten": {
+        1: Banane
+        2: Apfel
+        3: Dings
+        }   
+    }
+
+    {
+    "Name": "Toll echt - Kuchen"
+    "Autor": "Wer Das"
+    "Zutaten": {
+        1: Chips
+        2: Fett
+        3: Butter
+        }   
+    }
+}
