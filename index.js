@@ -13,15 +13,32 @@ app.get('/', function(req, res){
    res.status(200).send('Hallo! Das ist die Aktuelle Startseite unseres Projekts'); 
 });
 
+app.post('/rezepte', jsonParser, function(req, res){
+    //data.push(req.body);
+});
+
 app.get('/rezepte/:id', function(req, res){
-    res.status(200).json(fs.readFile(datadir + req.params.id +'.json', function(err, data){
+    var id = req.params.id;
+    res.status(200);
+    
+    fs.readFile(datadir + id +'.json', function(err, data){
     if(err) throw err;
     else {
-        var data = JSON.parse(data);        
+        console.dir(data);
+        var data = JSON.parse(data); 
+      console.log(data);
+        data.Rezepte.forEach(function(obj){
+         console.log("Name: " + obj.name);
+        });
+         
     };
-  })
+  }
 );
 });
+
+
+
+
 
 
 
