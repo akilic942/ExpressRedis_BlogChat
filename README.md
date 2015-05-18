@@ -17,9 +17,8 @@ löschen und bearbeiten kann der der gepostet hat und admin
 
 
 ####Anwendungslogik: 
-am Ende des Tages wird beliebtestesRezept ausgewertet und die Rangliste wird angepasst.
-Fragen die häufiger gestellt werden, werden zusammengepackt und hervorgehoben  
-Zutaten für Rezepte können ausgewählt werden.(zb ich habe diese Zutaten, was kann ich daraus herstellen?)  
+Zutaten für Rezepte können ausgewählt werden.
+Endprodukte suchen Rezepte erhalten
 
 ####Szenarien
 
