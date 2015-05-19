@@ -38,7 +38,10 @@ app.get('/rezepte/:id', function(req, res){
 });
 
 app.delete('/rezepte/:id', function(req, res)
-           
+           fs.readFile(datadir + id +'.json', function(err, data){
+            if(err) throw err;
+            else{}
+}
 
 
 
