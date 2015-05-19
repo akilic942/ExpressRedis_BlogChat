@@ -1,38 +1,39 @@
 
       {
-         "name":"Shanghai Tower",
-         "autor":"Shanghai",
+         "name":"Deo",
+         "autor":"Susi84",
          "zutaten":[
-	               "a",
-	               "b",
-	               "c"
+	               "Minze",
+	               "Kaiser Natron",
+	               "Lavendel"
 	               ]
       },
       {
-         "name":"One World Trade Center",
-         "autor":"New York City",
+         "name":"Maske",
+         "autor":"Patricia",
          "zutaten":[
-	               "a",
-	               "b",
-	               "c"
+	               "Honig",
+	               "Zucker",
+                   "Milch"
+	               
 	               ]
 	},
       {
-         "name":"CTF Finance Centre",
-         "autor":"Guangzhou",
+         "name":"Haarkur",
+         "autor":"Sabine13",
           "zutaten":[
-	               "a",
-	               "b",
-	               "c"
+	               "Olivenöl",
+	               "Jasminöl",
+	               "Knoblauchöl"
 	               ]
 	},
       {
-         "name":"Taipei 101",
-         "autor":"Tapei",
+         "name":"Zahnweiss",
+         "autor":"Tina",
         "zutaten":[
-                    "a",
-                    "b",
-                    "c"
+                    "Bananenschale",
+                    "Limettensaft"
+        ]
       }
 
 }
