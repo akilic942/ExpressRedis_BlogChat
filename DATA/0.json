@@ -1,5 +1,4 @@
 {
-   "rezepte":[
       {
          "name":"Shanghai Tower",
          "autor":"Shanghai",
@@ -34,7 +33,6 @@
                     "a",
                     "b",
                     "c"
-      ]
       }
 
 ]}
