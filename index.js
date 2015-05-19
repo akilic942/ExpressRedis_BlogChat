@@ -19,23 +19,22 @@ app.post('/rezepte', jsonParser, function(req, res){
 
 app.get('/rezepte/:id', function(req, res){
     var id = req.params.id;
-    res.status(200);
+  
     
     fs.readFile(datadir + id +'.json', function(err, data){
     if(err) throw err;
     else {
-        console.dir(data);
+     //   console.dir(data);
         var data = JSON.parse(data); 
       console.log(data);
         data.Rezepte.forEach(function(obj){
-         console.log("Name: " + obj.name);
+         res.send("Name: " + obj.name);
         });
          
     };
   }
 );
 });
-
 
 
 
