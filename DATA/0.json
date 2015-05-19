@@ -6,35 +6,7 @@
 	               "Minze",
 	               "Kaiser Natron",
 	               "Lavendel"
-	               ]
-      },
-      {
-         "name":"Maske",
-         "autor":"Schokimilki",
-         "zutaten":[
-	               "Honig",
-	               "Zucker",
-                   "Milch"
-	               
-	               ]
-	},
-      {
-         "name":"Haarkur",
-         "autor":"Sabine13",
-          "zutaten":[
-	               "Olivenöl",
-	               "Jasminöl",
-	               "Knoblauchöl"
-	               ]
-	},
-      {
-         "name":"Zahnweiss",
-         "autor":"Tina",
-        "zutaten":[
-                    "Bananenschale",
-                    "Limettensaft"
-        ]
+	               ],
+        "rezept":" Hallo meine Lieben Freunde der Sonnnnneeee :D ",
       }
-
-}
-        
+      
