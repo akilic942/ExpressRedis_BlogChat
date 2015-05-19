@@ -30,12 +30,15 @@ app.get('/rezepte/:id', function(req, res){
         data.Rezepte.forEach(function(obj){
          res.send("Name: " + obj.name);
         });
+        
          
     };
   }
 );
 });
 
+app.delete('/rezepte/:id', function(req, res)
+           
 
 
 
