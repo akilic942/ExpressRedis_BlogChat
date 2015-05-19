@@ -1,5 +1,8 @@
 {
+<<<<<<< Updated upstream
   
+=======
+>>>>>>> Stashed changes
       {
          "name":"Shanghai Tower",
          "autor":"Shanghai",
@@ -37,4 +40,4 @@
       
       }
 
-]}
+}
