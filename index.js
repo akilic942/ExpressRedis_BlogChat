@@ -10,50 +10,37 @@ var datadir = __dirname + '/DATA/';
 
 
 app.get('/', function(req, res){
-   res.status(200).send('Hallo! Das ist die Aktuelle Startseite unseres Projekts'); 
+   res.status(200).send('Hallo! Das ist die Aktuelle Startseite unseres Projekts') ; 
 });
 
 app.post('/rezepte', jsonParser, function(req, res){
-    //data.push(req.body);
 });
 
 app.get('/rezepte/:id', function(req, res){
     var id = req.params.id;
-  
+    var objid = id % 20;
+    var page = ~~(id/20);
     
-    fs.readFile(datadir + id +'.json', function(err, data){
+    fs.readFile(datadir + page +'.json', function(err, data){
     if(err) throw err;
     else {
-     //   console.dir(data);
         var data = JSON.parse(data); 
-      console.log(data);
-        data.Rezepte.forEach(function(obj){
-         res.send("Name: " + obj.name);
-        });
+        res.send("Name:" + data[objid].name + "\n" + "Autor:" + data[objid].autor + "\n" + "Zutaten:" + data[objid].zutaten + "\n" + "Rezept:" + data[objid].rezept);
+
+        }
         
          
-    };
+    });
   }
 );
-});
 
-app.delete('/rezepte/:id', function(req, res)
+
+app.delete('/rezepte/:id', function(req, res){
            fs.readFile(datadir + id +'.json', function(err, data){
             if(err) throw err;
             else{
-            var data =JSON.parse(data);}})
-
-        
-
-
-
-
-
-
-)
-
-
-
-
+            var data =JSON.parse(data);}
+           });
+});
 
 app.listen(3080,"localhost");
