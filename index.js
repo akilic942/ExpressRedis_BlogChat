@@ -5,7 +5,8 @@ var fs = require('fs');
 var app = express();
 var jsonParser = bodyParser.json();     
 
-var datadir = __dirname + '/DATA/';
+var dataDir = __dirname + '/DATA/';
+var dataLimit = 20;
 
 
 
@@ -15,17 +16,13 @@ app.get('/', function(req, res){
 });
 
 
-app.post('/rezepte', jsonParser, function(req, res){
-});
-
-
 app.get('/rezepte/:id', function(req, res){
    
     var id = req.params.id;
-    var objid = id % 20;
-    var page = ~~(id/20);
+    var objid = id % dataLimit;
+    var page = ~~(id/dataLimit);
     
-    fs.readFile(datadir +'rezepte/'+ page +'.json', function(err, data){
+    fs.readFile(dataDir +'rezepte/'+ page +'.json', function(err, data){
         if(err) throw err;
         else {
             var data = JSON.parse(data); 
@@ -47,12 +44,17 @@ app.get('/rezepte/:id', function(req, res){
 });
 
 
+app.post('/rezepte', jsonParser, function(req, res){
+});
+
+
 app.delete('/rezepte/:id', function(req, res){
-           fs.readFile(datadir + id +'.json', function(err, data){
+           fs.readFile(dataDir + id +'.json', function(err, data){
             if(err) throw err;
             else{
             var data =JSON.parse(data);}
            });
 });
+
 
 app.listen(3080,"localhost");
