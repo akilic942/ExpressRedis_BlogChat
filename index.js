@@ -16,31 +16,59 @@ app.get('/', function(req, res){
 });
 
 
+app.get('/rezepte/', function(req,res){
+    var rezepte = dataDir + 'rezepte/'
+    if(req.query.name !== undefined){
+        fs.readdir(rezepte,function(err,files){
+                if (err) throw err;
+                var c=0;
+                
+            files.forEach(function(file){
+                 //   c++;
+                    fs.readFile(rezepte + file,function(err,data){
+                        if (err) throw err;
+                   //     data[file]=data;
+                 //       if (0===--c) {
+                            var data = JSON.parse(data); 
+                            console.log(data); //socket.emit('init', {data: data});
+                        res.json(data.filter(function(e, i, arr){
+                            return e.name == req.query.name;
+                        }));
+                    //    }
+                    });
+                });
+            });
+    }
+    
+
+});
+
 app.get('/rezepte/:id', function(req, res){
    
     var id = req.params.id;
     var objid = id % dataLimit;
     var page = ~~(id/dataLimit);
+    var rezepte = dataDir + 'rezepte/'
     
-    fs.readFile(dataDir +'rezepte/'+ page +'.json', function(err, data){
-        if(err) throw err;
-        else {
-            var data = JSON.parse(data); 
-            var acceptedTypes =req.accepts(['html', 'json']);
+        fs.readFile(dataDir +'rezepte/'+ page +'.json', function(err, data){
+            if(err) throw err;
+            else {
+                var data = JSON.parse(data); 
+                var acceptedTypes =req.accepts(['html', 'json']);
         
-            switch(acceptedTypes){
-                case 'html':
-                    res.send("Name:" + data[objid].name + "\n" + "Autor:" + data[objid].autor + "\n" + "Zutaten:" + data[objid].zutaten + "\n" + "Rezept:" + data[objid].rezept).status(200);
-                    break;
-                case 'json':
-                    res.json(data[objid]).status(200);
-                    break;
-                default:
-                    res.status(406).end;
-                    break;
+                switch(acceptedTypes){
+                    case 'html':
+                        res.send("Name:" + data[objid].name + "\n" + "Autor:" + data[objid].autor + "\n" + "Zutaten:" + data[objid].zutaten + "\n" + "Rezept:" + data[objid].rezept).status(200);
+                        break;
+                    case 'json':
+                        res.json(data[objid]).status(200);
+                        break;
+                    default:
+                        res.status(406).end;
+                        break;
+                }
             }
-        }         
-    });
+        });
 });
 
 
