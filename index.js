@@ -24,17 +24,15 @@ app.get('/rezepte/', function(req,res){
                 var c=0;
                 
             files.forEach(function(file){
-                 //   c++;
+                    c++;
                     fs.readFile(rezepte + file,function(err,data){
                         if (err) throw err;
-                   //     data[file]=data;
-                 //       if (0===--c) {
-                            var data = JSON.parse(data); 
-                            console.log(data); //socket.emit('init', {data: data});
-                        res.json(data.filter(function(e, i, arr){
-                            return e.name == req.query.name;
-                        }));
-                    //    }
+                        var data = JSON.parse(data);
+                        data[file]=data;
+                        res.json(data[file].filter(function(e, i, arr){
+                        return e.name == req.query.name;
+                        })).status(200);
+                        
                     });
                 });
             });
