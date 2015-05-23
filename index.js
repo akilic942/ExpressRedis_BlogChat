@@ -32,9 +32,9 @@ app.get('/rezepte/', function(req,res){
                         var data = JSON.parse(data);
                         data[file]=data;
                         
-                        console.log(data[file].filter(function(e, i, arr){
+                        res.end(JSON.stringify(data[file].filter(function(e, i, arr){
                         return e.name.toLowerCase() == req.query.name.toLowerCase();
-                        }));
+                        })));
                     });
                 });
             });
