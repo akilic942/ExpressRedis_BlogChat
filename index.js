@@ -18,6 +18,7 @@ app.get('/', function(req, res){
 
 app.get('/rezepte/', function(req,res){
     var rezepte = dataDir + 'rezepte/'
+    
     if(req.query.name !== undefined){
         fs.readdir(rezepte,function(err,files){
                 if (err) throw err;
@@ -25,14 +26,15 @@ app.get('/rezepte/', function(req,res){
                 
             files.forEach(function(file){
                     c++;
+                
                     fs.readFile(rezepte + file,function(err,data){
                         if (err) throw err;
                         var data = JSON.parse(data);
                         data[file]=data;
-                        res.json(data[file].filter(function(e, i, arr){
-                        return e.name == req.query.name;
-                        })).status(200);
                         
+                        console.log(data[file].filter(function(e, i, arr){
+                        return e.name.toLowerCase() == req.query.name.toLowerCase();
+                        }));
                     });
                 });
             });
