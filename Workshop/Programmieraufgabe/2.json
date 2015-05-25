@@ -1,0 +1,30 @@
+{
+         "name":"Maske",
+         "autor":"Schokimilki",
+         "zutaten":[
+	               "Honig",
+	               "Zucker",
+                   "Milch"
+	               
+	               ]
+	},
+      {
+         "name":"Haarkur",
+         "autor":"Sabine13",
+          "zutaten":[
+	               "Olivenöl",
+	               "Jasminöl",
+	               "Knoblauchöl"
+	               ]
+	},
+      {
+         "name":"Zahnweiss",
+         "autor":"Tina",
+        "zutaten":[
+                    "Bananenschale",
+                    "Limettensaft"
+        ]
+      }
+
+}
+        
