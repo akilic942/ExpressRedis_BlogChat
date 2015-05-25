@@ -8,15 +8,15 @@ var app = express();
 app.use(bodyParser.json());
 
 //Posten eines Rezepts mit ID (nach WorkshopBeispiel) //
-app.post('/rezept', function(req,res){
+app.post('/rezept', function(req, res){
 
   var newPost = req.body;
 
-  db.incr('id:rezept', function(err,rep){
+  db.incr('id:rezept', function(err, rep){
 
     newPost.id = rep;
 
-    db.set('Rezept:' +newPost.id , JSON.stringify(newPost), function(err,rep){
+    db.set('Rezept:' +newPost.id , JSON.stringify(newPost), function(err, rep){
       res.json(newUser);
     });
 
