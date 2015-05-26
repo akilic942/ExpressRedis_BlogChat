@@ -7,7 +7,8 @@ var app = express();
 
 app.use(bodyParser.json());
 
-//Posten eines Rezepts mit ID (nach WorkshopBeispiel) //
+// Unveränderte Beispiele aus dem Workshop - 1, 2, 3 //
+// 1 Posten eines Rezepts mit ID (nach WorkshopBeispiel) //
 app.post('/rezept', function(req, res){
 
   var newPost = req.body;
@@ -16,13 +17,32 @@ app.post('/rezept', function(req, res){
 
     newPost.id = rep;
 
-    db.set('Rezept:' +newPost.id , JSON.stringify(newPost), function(err, rep){
-      res.json(newUser);
+    db.set('Rezept: ' +newPost.id , JSON.stringify(newPost), function(err, rep){
+      res.json(newPost);
     });
 
   });
 
 });
 
-// localhost:3080 //
+// 2 Anfragen aller Rezepte //
+app.get('/rezept/', function(err, rep){
+
+
+});
+
+// 3 Anfragen eines Rezepts nach ID //
+app.get('/rezept/:id', function(err, rep){
+
+  db.get('Rezept: '+ req.params.id, function(err, rep){
+    if(rep){
+      res.type('json').send(rep);
+    }
+    else {
+      res.status(404).type('text').send('Diese Seite existert nicht.')
+    }
+  });
+});
+
+// localhost:3030 //
 app.listen('3030');
