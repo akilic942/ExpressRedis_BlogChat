@@ -25,6 +25,25 @@ app.post('/rezept', function(req, res){
 
 });
 
+// Posten eines Kommentares zum jeweilgen Post //
+
+app.post('/rezept/:postid/comment/', function(req, res){
+
+  var newComment = req.body;
+
+  db.incr('id:comment', function(err, rep){
+
+    newComment.id = rep;
+
+    db.set('Kommentar:'+req.params.postid, JSON.stringify(newComment), function(err, rep){
+      res.json(newComment);
+    });
+
+  });
+
+});
+
+
 // 2 Anfragen aller Rezepte //
 app.get('/rezept/', function(err, rep){
 
