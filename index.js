@@ -32,25 +32,19 @@ app.post('/rezept/:postid/comment/', function(req, res){
   var newComment = req.body;
 
   db.exists('Rezept:'+req.params.postid, function(err, rep){
-    console.log(err);
 
     if(rep){
-
       db.incr('ID_comment:'+req.params.postid, function(err, rep){
-
         newComment.id = rep;
 
         db.lpush('Kommentare zu Rezept:'+req.params.postid, JSON.stringify(newComment), function(err, rep){
           res.json(newComment);
         });
-
       });
     }
 
     else res.status(404).type('text').send('Es existiert kein Rezept, zudem sie ein Kommentar schreiben möchten');
-
   });
-
 });
 
 
