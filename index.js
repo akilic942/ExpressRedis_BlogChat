@@ -10,9 +10,12 @@ var date = moment().format('DD.MM.YYYY, HH:mm');
 app.use(bodyParser.json());
 
 //-------------------------------------------------------
-// Post Funktion
+//
+//                     Post Funktion
+//
 //-------------------------------------------------------
-// Posten eines Post mit ID (nach WorkshopBeispiel)
+
+// POST - Posten eines Post mit ID (nach WorkshopBeispiel)
 app.post('/post', function(req, res){
 
   var newPost = req.body;
@@ -20,7 +23,7 @@ app.post('/post', function(req, res){
   db.incr('Counter:OverallPOSTS', function(err, rep){
 
     newPost.id = rep;
-    newPost.ErstelltAm = date;
+    newPost.Erstellt = date;
 
     db.set('Post:'+newPost.id, JSON.stringify(newPost), function(err, rep){
       res.json(newPost);
@@ -30,13 +33,13 @@ app.post('/post', function(req, res){
 
 });
 
-// Anfragen eines Post nach ID //
-app.get('/post/:id', function(req, res){
-  db.get('Post:'+req.params.id, function(err, rep){
+// GET - Anfragen eines Post nach ID
+app.get('/post/:postid', function(req, res){
+  db.get('Post:'+req.params.postid, function(err, rep){
     if(rep){
       var Post = rep;
       db.incr('Counter:OverallGET');
-      db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.id);
+      db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.postid);
       res.type('json').send(Post);
 
     }
@@ -46,7 +49,51 @@ app.get('/post/:id', function(req, res){
   });
 });
 
-// Ändern eines Posts
+// GET - Anfrage des Posts mit meisten Anfragen
+app.get('/top', function(req, res){
+
+  if(req.query.range !== undefined){
+    db.zrevrange('Counter:OnPostGET',0,req.query.range, function(err, rep){
+      if (rep){
+      var top =  rep;
+
+        db.mget(top, function(err,rep){
+          var Post = rep;
+          if(rep){
+            res.type('json').send(Post);
+          }
+
+          else {
+            res.status(404).type('text').write('Diese Seite existert nicht.');
+          }
+
+          });
+        };
+      });
+    }
+
+    else {
+      db.zrevrange('Counter:OnPostGET',0,0, function(err, rep){
+        if (rep){
+        var top =  rep;
+
+        db.mget(top, function(err,rep){
+          var Post = rep;
+          if(rep){
+            res.type('json').send(Post);
+          }
+
+          else {
+            res.status(404).type('text').write('Diese Seite existert nicht.');
+          }
+
+        });
+      };
+    });
+  };
+  });
+
+// PUT - Ändern eines Posts
 app.put('/post/:postid', function (req,res){
 
   db.exists('Post:'+req.params.postid, function(err,rep){
@@ -66,7 +113,7 @@ app.put('/post/:postid', function (req,res){
   });
 });
 
-// Löschen eines Posts
+// DELTE -  Löschen eines Posts
 app.delete('/post/:postid',function(req, res){
   db.del('Post:'+req.params.postid, function(err,rep){
     if(rep){
@@ -79,10 +126,15 @@ app.delete('/post/:postid',function(req, res){
   })
 });
 
+
+
 //-------------------------------------------------------
-// Kommentar Funktion
+//
+//                  Kommentar Funktion
+//
 //-------------------------------------------------------
-// Posten eines Kommentares zum jeweilgen Post über HASH-Keys, ermöglicht das löschen und abrufen nach ID
+
+// POST - Posten eines Kommentares zum jeweilgen Post über HASH-Keys, ermöglicht das löschen und abrufen nach ID
 
 app.post('/post/:postid/comment/', function(req, res){
 
@@ -109,7 +161,7 @@ app.post('/post/:postid/comment/', function(req, res){
   });
 });
 
-// Anfragen aller Kommentare zum Post
+// GET - Anfragen aller Kommentare zum Post
 app.get('/post/:id/comment/', function(req, res){
   db.hgetall('Comments:'+req.params.id, function(err, rep){
     if(rep){
@@ -122,7 +174,7 @@ app.get('/post/:id/comment/', function(req, res){
   })
 });
 
-//Löschen eines Kommentare :cid aus dem Post :pid
+// DELETE - Löschen eines Kommentare :cid aus dem Post :pid
 app.delete('/post/:pid/comment/:cid',function(req, res){
 
     db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
@@ -136,6 +188,5 @@ app.delete('/post/:pid/comment/:cid',function(req, res){
 });
 
 //-------------------------------------------------------
-
 // localhost:3000 //
 app.listen('3000');
