@@ -19,6 +19,7 @@
     "body-parser": "^1.12.4",
     "express": "^4.12.4",
     "moment": "^2.10.3",
-    "redis": "^0.12.1"
+    "redis": "^0.12.1",
+    "redis-search": "0.0.1"
   }
 }
