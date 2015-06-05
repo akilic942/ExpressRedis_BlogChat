@@ -2,12 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var redis = require('redis');
 var moment = require('moment');
-var search = require('redis-search');
+var search = require('reds');
 
 var db = redis.createClient();
 var app = express();
 var date = moment().format('DD.MM.YYYY, HH:mm');
-var search = search.createSearch();
+var search = search.createSearch('search');
 
 app.use(bodyParser.json());
 
@@ -30,6 +30,10 @@ app.post('/post', function(req, res){
 
     db.set('Post:'+newPost.id, JSON.stringify(newPost), function(err, rep){
       res.json(newPost);
+
+      db.lpush('List:Posts','Post:'+newPost.id, function(err,rep){
+
+      });
     });
 
   });
@@ -84,7 +88,9 @@ app.delete('/post/:postid',function(req, res){
     if(rep){
       db.del('Comments:post:'+req.params.postid,function(err,rep){
         db.del('Comments:'+req.params.postid, function(err,rep){
+          db.lrem('List:Posts', 0,'Post:'+req.params.postid,function(err,rep){
           res.status(200).type('text').send('ok');
+          })
         })
       })
     }
@@ -275,66 +281,37 @@ app.get('/topcommented', function(req, res){
 //                  Such Funktion
 //
 //-------------------------------------------------------
-// app.get('',function(req,res){
-//
-//   function  index(i) {
-//     if( i != 0 ) {
-//       db.get('Post:'+i, function(err, rep){
-//         if(rep){
-//           search.index(rep);
-//           console.dir(i);
-//           console.dir(rep);
-//
-//           index(i-1);
-//         }
-//         else{
-//           index(i-1);
-//         }
-//       });
-//     }
-//   }
-//
-//   if(req.query.search !== undefined){
-//
-//     db.get('Counter:OverallPOSTS', function(err, rep){
-//       if (err) res.status(404).type('text').write('Es existieren keine Posts.');
-//       index(rep);
-//
-//       search.query(query = 'aziz', function(err, ids) {
-//         if (err) throw err;
-//         console.log('Search results for "%s":', query);
-//         console.log(ids);
-//         process.exit();
-//     });
-//
-//     });
-//
-//     }
-//
-//   });
+app.get('/',function(req,res){
 
-app.get('/test',function(req,res){
-  var strs = [];
-   strs.push('Tobi wants four dollars');
-   strs.push('Tobi only wants $4');
-   strs.push('Loki is really fat');
-   strs.push('Loki, Jane, and Tobi are ferrets');
-   strs.push('Manny is a cat');
-   strs.push('Luna is a cat');
-   strs.push('Mustachio is a cat');
+  db.lrange('List:Posts',0,-1,function(err,rep){
+    if (err) res.status(404).type('text').send('Es existieren keine Posts.');
+    var list = rep;
 
-   strs.forEach(function(str, i){
-     search.index(str, i);
-    });
+    db.mget(list,function(err,rep){
+      var postindex = rep;
 
-    search
-   .query(query = 'Tobi', function(err, ids) {
-       if (err) throw err;
-       console.log('Search results for "%s":', query);
-       console.log(ids);
-       process.exit();
-   });
- });
+      postindex.forEach(function(str, i){ search.index(str, i); });
+
+      if(req.query.search !== undefined){
+
+        search.query(query = req.query.search).end(function(err, ids){
+            if (err) throw err;
+            var i = 0;
+            var results= [];
+
+            ids.forEach(function(id){
+              results[i++] = postindex[id];
+            });
+
+            res.json(results);
+
+            return;
+        });
+      }
+    })
+  })
+});
+
 
 //-------------------------------------------------------
 // localhost:3000 //
