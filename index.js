@@ -1,8 +1,8 @@
-var express = require('express');
+var express = require('express'), partialResponse = require('express-partial-response');
 var bodyParser = require('body-parser');
-var redis = require('redis');
+var redis = require('redis'), search = require('reds');
 var moment = require('moment');
-var search = require('reds');
+
 
 var db = redis.createClient();
 var app = express();
@@ -10,6 +10,7 @@ var date = moment().format('DD.MM.YYYY, HH:mm');
 var search = search.createSearch('search');
 
 app.use(bodyParser.json());
+app.use(partialResponse());
 
 //-------------------------------------------------------
 //
@@ -48,7 +49,7 @@ app.get('/post/:postid', function(req, res){
       var Post = rep;
       db.incr('Counter:OverallGET');
       db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.postid);
-      res.type('json').send(Post);
+      res.json(JSON.parse(Post));
 
     }
     else {
@@ -133,7 +134,7 @@ app.get('/top', function(req, res){
         db.mget(top, function(err,rep){
           var Post = rep;
           if(rep){
-            res.type('json').send(Post);
+            res.json(JSON.parse(Post));
           }
 
           else {
@@ -155,7 +156,7 @@ app.get('/mostrecent', function(req,res){
       var recent = rep;
         db.mget(recent, function(err, rep){
           if(rep){
-            res.type('json').send(rep);
+            res.json(JSON.parse(rep));
           }
           else{
             res.status(404).send("Fehler");
@@ -169,7 +170,7 @@ app.get('/mostrecent', function(req,res){
       var recent = rep;
         db.get(recent, function(err, rep){
           if(rep){
-            res.type('json').send(rep);
+            res.json(JSON.parse(rep));
           }
           else{
             res.status(404).send("Fehler");
@@ -293,6 +294,7 @@ app.get('/topcommented', function(req, res){
 //-------------------------------------------------------
 app.get('/',function(req,res){
 
+  if(req.query.search !== undefined){
   db.lrange('List:Posts',0,-1,function(err,rep){
     if (err) res.status(404).type('text').send('Es existieren keine Posts.');
     var list = rep;
@@ -302,7 +304,7 @@ app.get('/',function(req,res){
 
       postindex.forEach(function(str, i){ search.index(str, i); });
 
-      if(req.query.search !== undefined){
+
 
         search.query(query = req.query.search).end(function(err, ids){
             if (err) throw err;
@@ -317,9 +319,9 @@ app.get('/',function(req,res){
 
             return;
         });
-      }
     })
   })
+      }
 });
 
 
