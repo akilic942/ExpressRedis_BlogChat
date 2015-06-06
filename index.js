@@ -149,19 +149,35 @@ app.get('/top', function(req, res){
 // GET Anfrage des juengsten (bzw. neuesten) Post
 
 app.get('/mostrecent', function(req,res){
-  db.lrange('List:Posts',0,0,function(err,rep){
-    var recent = rep;
-      db.get(recent, function(err, rep){
-        if(rep){
-          res.type('json').send(rep);
 
-        }
-        else{
-          res.status(404).send("Fehler");
-        }
-      });
+  if(req.query.range !== undefined){
+    db.lrange('List:Posts',0,req.query.range,function(err,rep){
+      var recent = rep;
+        db.mget(recent, function(err, rep){
+          if(rep){
+            res.type('json').send(rep);
+          }
+          else{
+            res.status(404).send("Fehler");
+          }
+        });
+    });
+  }
 
-  });
+  else{
+    db.lrange('List:Posts',0,0,function(err,rep){
+      var recent = rep;
+        db.get(recent, function(err, rep){
+          if(rep){
+            res.type('json').send(rep);
+          }
+          else{
+            res.status(404).send("Fehler");
+          }
+        });
+    });
+  }
+
 });
 
 //-------------------------------------------------------
