@@ -149,24 +149,18 @@ app.get('/top', function(req, res){
 // GET Anfrage des juengsten (bzw. neuesten) Post
 
 app.get('/mostrecent', function(req,res){
-  function  recent(i) {
-    if( i != 0 ) {
-      db.get('Post:'+i, function(err, rep){
+  db.lrange('List:Posts',0,0,function(err,rep){
+    var recent = rep;
+      db.get(recent, function(err, rep){
         if(rep){
           res.type('json').send(rep);
-          i=0;
+
         }
         else{
-          recent(i-1);
+          res.status(404).send("Fehler");
         }
       });
-    }
-  }
 
-  db.get('Counter:OverallPOSTS', function(err, rep){
-    if (err) res.status(404).type('text').write('Es existieren keine Posts.');
-    var i = rep;
-    recent(i);
   });
 });
 
