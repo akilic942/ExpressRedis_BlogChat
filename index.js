@@ -197,7 +197,7 @@ app.post('/post/:postid/comment/', function(req, res){
   db.exists('Post:'+req.params.postid, function(err, rep){
 
     if(rep){
-      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){
+      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){  //Zähler Kommentarliste 
         cid = rep;
 
         db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
