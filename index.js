@@ -295,12 +295,12 @@ app.get('/topcommented', function(req, res){
 app.get('/',function(req,res){
 
   if(req.query.search !== undefined){
-  db.lrange('List:Posts',0,-1,function(err,rep){
+  db.lrange('List:Posts',0,-1,function(err,rep){    //holt alle Namen vom Post
     if (err) res.status(404).type('text').send('Es existieren keine Posts.');
     var list = rep;
 
-    db.mget(list,function(err,rep){
-      var postindex = rep;
+    db.mget(list,function(err,rep){     //fügt sie dort ein
+      var postindex = rep;              //mein Array (nimmt die Antwort)
 
       postindex.forEach(function(str, i){ search.index(str, i); });
 
