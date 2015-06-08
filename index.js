@@ -233,7 +233,7 @@ app.get('/post/:id/comment/', function(req, res){
 app.delete('/post/:pid/comment/:cid',function(req, res){
 
     db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
-      if(rep==0)res.status(400).type('text').send('klapptnicht');
+      if(rep==0)res.status(400).type('text').send('klappt nicht');
       else{
         db.HDEL('Comments:'+req.params.pid, req.params.cid, function(err, rep){
           res.status(200).type('text').send('Erfolgreich gelöscht!')
