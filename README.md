@@ -47,7 +47,7 @@ Mia M. (22) ist eine der drei Admins von „Accuratus“. Ihre Aufgabe besteht d
 
 | Ressource              | Methode | Semantik                                                                             | Content-Type (req) | Content-Type (res) |
 |------------------------|---------|--------------------------------------------------------------------------------------|--------------------|--------------------|
-| /post                | post    | Posten eines Posts mit ID                                                    |            tapplication/json        |        text/plain            |
+| /post                | post    | Posten eines Posts mit ID                                                    |            application/json        |        text/plain            |
 | /post/:postid              | get     | Anfragen eines Posts nach ID                                 |       application/json             |          application/json          |
 | /post/:postid              | put     | Ändern eines Posts                                    |      application/json              |      text/plain              |
 | /post/:postid              | delete  | Löschen eines Posts mit ihren Kommentaren                                                         |          application/json          |     application/json               |
