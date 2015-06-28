@@ -8,17 +8,16 @@ Datei "A1.js"
 
 ###Accuratus
 ####Funktionen
-Website, auf der Rezepte für zb selbstgemachte Hygieneprodukte
-Alle können Rezepte hochladen oder Fragen posten. wenn rezept korrekt setzt admin häkchen
-man kann kommentieren
-man kann liken
-
-löschen und bearbeiten kann der der gepostet hat und admin
+- jeder kann Rezept posten
+- jeder kann jedes Rezept kommentieren
+- ein Post kann mit samt Kommentaren gelöscht werden
+- ein Kommentar kann gelöscht werden 
 
 
 ####Anwendungslogik: 
-Zutaten für Rezepte können ausgewählt werden.
-Endprodukte suchen Rezepte erhalten
+- Produktnamen können in Suchfunktion geschrieben werden. --> es werden alle Rezepte mit diesem Produktnamen ausgegeben.
+- es wird gezählt, wie oft ein Rezept aufgerufen wurde
+- es wird gezählt, wie oft ein Rezept kommentiert wurde
 
 ####Szenarien
 
