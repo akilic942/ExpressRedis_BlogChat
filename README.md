@@ -61,3 +61,15 @@ Mia M. (22) ist eine der drei Admins von „Accuratus“. Ihre Aufgabe besteht d
 | /     | get     |        SUCH-Funktion                                                                              |        text/plain            |        application/json            |
 
 
+
+#### Use Cases
+
+##### 1.
+Maria Schäfer ist eine leidenschaftliche Bloggerin. Sie zeigt anderen Mädchen, wie sie sich zu schminken haben und welches Outfit zu dieser Schminke passen würde. Da es zur Zeit angesagt ist, okölogisch und ökonomisch zu Handeln, werden ihr immer häufiger Fragen gestellt, ob man Kosmetikartikel auch selber herstellen könnte, da die meisten nicht vegan sind und oder mit Hilfe von Tierversuchen hergestellt wurden. Um ihre Fans nicht zu enttäuschen, entschließt Maria Schäfer sich, ihren eigenen Lippenstift herzustellen. Da sie jedoch nicht dafür ausgebildet wurde, so etwas zu kreieren, sucht sie im Internet nach Hilfen und stößt auf eine Website namens Accuratus. Mit Hilfe einer Suchfunktion erhält sie in wenigen Klicks mehrere Rezepte für einen selbstgemachten Lippenstift. Anhand der Kommentare zu den Rezepten und den Klickanzahlen, sieht Maria schnell, welches Rezept empfehlenswert wäre. Dies probiert sie aus und präsentiert ihr Ergebnis in einer neuen Folge ihres Bloggs ihren Fans.
+
+
+##### 2.
+Tanja Buschmann ist vor einigen Monaten Mutter geworden und ist in ständiger Sorge um ihr Kind. Aus einem unerklärlichen Grund verträgt ihr Neugeborenes keinerlei Produkte aus der Drogerie. Daraufhin beschloss Tanja die Artikel für ihr Baby aus der Apotheke zu kaufen. Diese jedoch sind so teuer, dass die Mutter es auf die Dauer nicht schafft, den Kosten gerecht zu werden. Eine Freundin die selber Mutter von zwei Kindern ist, empfiehlt Tanja ihre Produkte eigenständig herzustellen. Diese bezieht ihre Rezepte regelmäßig von der Website Accuratus. Da Tanja jedoch keinerlei Internet-Erfahrung hat, scheut sie sich davor, dieser Empfehlung nachzukommen. Schnell kommt Tanja ihre Freundin entgegen und erklärt kurzerhand wie sie nur mit einer Sucheingabe an gewünschte Produkte gelangen kann. Tanja ist dennoch skeptisch, da sie ihrem Baby nicht irgendwelche Produkte zumuten möchte. Auch hierfür kennt ihre Freundin eine Lösung. Die vielen Kommentare verschiedenster Menschen sind unter den Rezepten. Tanja entschließt sich unter einem Rezept zu schreiben, ob dieses Produkt für Neugeborene empfehlenswert wäre. Als sie daraufhin schnell eine Antwort bekommt, versucht sie das Rezept aus. Heute mischt Tanja sich regelmäßig Produkte für sich und ihr Baby. Glücklicherweise ist jeglicher Ausschlag dank Accuratus zurückgegangen.
+
+
+##### 3:
