@@ -14,7 +14,7 @@ app.use(partialResponse());
 
 //-------------------------------------------------------
 //
-//                     Post Funktion
+//                     Post Funktions
 //
 //-------------------------------------------------------
 
@@ -197,7 +197,7 @@ app.post('/post/:postid/comment/', function(req, res){
   db.exists('Post:'+req.params.postid, function(err, rep){
 
     if(rep){
-      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){  //Zähler Kommentarliste 
+      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){  //Zähler Kommentarliste
         cid = rep;
 
         db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
@@ -298,16 +298,16 @@ app.get('/',function(req,res){
   db.lrange('List:Posts',0,-1,function(err,rep){    //holt alle Namen vom Post
     if (err) res.status(404).type('text').send('Es existieren keine Posts.');
     var list = rep;
-      
-    // mach aus dem Post- ein Such-index  
+
+    // mach aus dem Post- ein Such-index
     db.mget(list,function(err,rep){     //fügt sie dort ein
       var postindex = rep;              //mein Array (nimmt die Antwort)
 
-      postindex.forEach(function(str, i){ search.index(str, i); }); 
+      postindex.forEach(function(str, i){ search.index(str, i); });
 
 
 
-        search.query(query = req.query.search).end(function(err, ids){  
+        search.query(query = req.query.search).end(function(err, ids){
             if (err) throw err;
             var i = 0;
             var results= [];
