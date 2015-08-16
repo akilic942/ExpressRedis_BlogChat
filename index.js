@@ -1,4 +1,5 @@
 var express = require('express'), partialResponse = require('express-partial-response');
+var faye = require('faye');
 var bodyParser = require('body-parser');
 var redis = require('redis'), search = require('reds');
 var moment = require('moment');
@@ -14,16 +15,18 @@ app.use(partialResponse());
 
 //-------------------------------------------------------
 //
-//                     Post Funktions
+//                     Post Funktion
 //
 //-------------------------------------------------------
 
-// POST - Posten eines Post mit ID (nach WorkshopBeispiel)
+// POST - Posten eines Post mit ID (nach WorcokshopBeispiel)
 
 app.post('/post', function(req, res){
 
   var newPost = req.body;
 
+
+  //posten in die Datenbank
   db.incr('Counter:OverallPOSTS', function(err, rep){
 
     newPost.id = rep;
@@ -33,10 +36,25 @@ app.post('/post', function(req, res){
       res.json(newPost);
 
       db.lpush('List:Posts','Post:'+newPost.id, function(err,rep){
-
       });
     });
+  });
 
+  //publication
+  var publication = client.publish('/post',{
+    "author": req.body.author,
+    "content": req.body.content,
+  }).then(
+
+    function(){
+    console.log("New publication oke");
+    res.writeHead(200,"oke");
+    res.write("Nachricht wurde gesendet oke")
+    }
+
+    function(error){
+    res.status(404).type('text').send('nö');
+    }
   });
 
 });
@@ -197,7 +215,7 @@ app.post('/post/:postid/comment/', function(req, res){
   db.exists('Post:'+req.params.postid, function(err, rep){
 
     if(rep){
-      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){  //Zähler Kommentarliste
+      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){
         cid = rep;
 
         db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
@@ -233,7 +251,7 @@ app.get('/post/:id/comment/', function(req, res){
 app.delete('/post/:pid/comment/:cid',function(req, res){
 
     db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
-      if(rep==0)res.status(400).type('text').send('klappt nicht');
+      if(rep==0)res.status(400).type('text').send('klapptnicht');
       else{
         db.HDEL('Comments:'+req.params.pid, req.params.cid, function(err, rep){
           res.status(200).type('text').send('Erfolgreich gelöscht!')
@@ -295,14 +313,14 @@ app.get('/topcommented', function(req, res){
 app.get('/',function(req,res){
 
   if(req.query.search !== undefined){
-  db.lrange('List:Posts',0,-1,function(err,rep){    //holt alle Namen vom Post
+  db.lrange('List:Posts',0,-1,function(err,rep){
     if (err) res.status(404).type('text').send('Es existieren keine Posts.');
-    var list = rep;
+    var list = rep; //map -> rep - JSON.parse //
 
-    // mach aus dem Post- ein Such-index
-    db.mget(list,function(err,rep){     //fügt sie dort ein
-      var postindex = rep;              //mein Array (nimmt die Antwort)
-
+    db.mget(list,function(err,rep){
+      var postindex = rep;
+      console.dir(postindex);
+      postindex.map(function(err,rep){JSON.parse});
       postindex.forEach(function(str, i){ search.index(str, i); });
 
 
