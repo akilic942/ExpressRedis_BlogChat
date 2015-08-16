@@ -1,0 +1,27 @@
+{
+  "name": "Accuratus",
+  "version": "1.0.1",
+  "description": "WBA 2 SoSe15 Team 8 (Meryem Dural, Aylin Mengi, Aziz Kilic)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaneda942/WBA2-SoSe15-T8/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "express-partial-response": "^0.3.4",
+    "faye": "^1.1.1",
+    "moment": "^2.10.3",
+    "redis": "^0.12.1",
+    "reds": "^0.2.5"
+  }
+}
