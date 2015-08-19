@@ -20,6 +20,7 @@
     "express": "^4.12.4",
     "express-partial-response": "^0.3.4",
     "faye": "^1.1.1",
+    "faye-redis": "^0.2.0",
     "moment": "^2.10.3",
     "redis": "^0.12.1",
     "reds": "^0.2.5"
