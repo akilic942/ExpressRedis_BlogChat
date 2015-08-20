@@ -121,7 +121,7 @@ app.get('/top', function(req, res){
         db.mget(top, function(err,rep){
           var Post = rep;
           if(rep){
-            res.type('json').send(Post);
+            res.json(rep.map(JSON.parse));
           }
 
           else {
@@ -228,6 +228,8 @@ app.get('/post/:id/comment/', function(req, res){
   db.hgetall('Comments:'+req.params.id, function(err, rep){
     if(rep){
       res.type('json').send(rep);
+      //res.json(JSON.parse(JSON.stringify(rep)));
+
     }
 
     else {
@@ -262,7 +264,7 @@ app.get('/topcommented', function(req, res){
         db.mget(top, function(err,rep){
           var Post = rep;
           if(rep){
-            res.type('json').send(Post);
+            res.json(rep.map(JSON.parse));
           }
 
           else {
@@ -282,7 +284,7 @@ app.get('/topcommented', function(req, res){
         db.mget(top, function(err,rep){
           var Post = rep;
           if(rep){
-            res.type('json').send(Post);
+            res.json(Post.map(JSON.parse));
           }
 
           else {
@@ -337,4 +339,6 @@ app.get('/',function(req,res){
 //-------------------------------------------------------
 // localhost:3000 //
 
-app.listen(3000);
+app.listen(3000, function() {
+  console.log('rest started')
+});
