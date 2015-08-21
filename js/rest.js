@@ -60,7 +60,7 @@ app.get('/post/:postid', function(req, res){
 
 		}
 		else {
-			res.status(404).type('text').send('Diese Seite existert nicht.');
+			res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
 		}
 	});
 });
@@ -83,7 +83,7 @@ app.put('/post/:postid', function (req,res){
 		}
 
 		else{
-				res.status(404).type('text').send('Der Post ist nicht vorhanden');
+				res.status(404).type('text').send('Der Post ist nicht vorhanden ¯_(ツ)_/¯');
 		}
 	});
 });
@@ -104,7 +104,7 @@ app.delete('/post/:postid',function(req, res){
 		}
 
 		else{
-			res.status(404).type('text').send('post nicht vorhanden');
+			res.status(404).type('text').send('post nicht vorhanden ¯_(ツ)_/¯');
 		}
 	});
 });
@@ -124,7 +124,7 @@ app.get('/top', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').send('Diese Seite existert nicht.');
+						res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
 					}
 
 					});
@@ -144,7 +144,7 @@ app.get('/top', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').send('Diese Seite existert nicht.');
+						res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
 					}
 
 				});
@@ -348,5 +348,5 @@ app.get('/',function(req,res){
 // localhost:3000 //
 
 app.listen(3000, function() {
-	console.log('rest started')
+	console.log('(~˘▾˘)~ Der Rest-Service wurde Erfolgreich gestartet ~(˘▾˘~)')
 });

@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Blog</title>
+      <body>
+        <ul>
+
+
+
+        <% data.forEach(function(obj) { %>
+        <li><%= obj.Name %> <br> Erstellt am: <%= obj.ErstelltAm %> <br> E-Mail: <%= obj.Mail %> -<br>
+          <br><%= obj.Kommentar %></li>
+    <% }); %>
+
+          <hr>
+
+          <hr>
+        </ul>
+      </body>
+  </head>
+  </html>

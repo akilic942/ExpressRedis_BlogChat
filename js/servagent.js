@@ -68,7 +68,53 @@ app.get('/blog/:id', jsonParser, function(req, res){
 
 
 
+app.get('/blog/:id/comments', jsonParser, function(req,res){
+  var blogid = req.params.id;
 
+  fs.readFile('./js/service/comments.ejs', {encoding: 'utf-8'}, function(err, filestring){
+    if (err)
+      throw err;
+
+    else {
+
+      var options = {
+          host: 'localhost',
+          port: '3000',
+          path: '/post/'+ blogid + '/comment/',
+          method: 'GET',
+          headers: {
+              accept: 'application/json'
+          }
+      };
+
+    var externalRequest = http.request(options, function(externalResponse){
+      console.log('external Connected');
+      externalResponse.on('data',function(chunk){
+
+        var data = JSON.parse(chunk);
+
+        console.dir(data);
+
+        var html = ejs.render(filestring, {
+          data: data
+          });
+
+        res.setHeader('content-type', 'text/html');
+        res.writeHead(200);
+        res.write(html);
+        res.end();
+
+      });
+
+    });
+
+    externalRequest.end();
+
+    }
+
+  });
+
+});
 
 
 
@@ -90,5 +136,5 @@ app.get('/blog/:id', jsonParser, function(req, res){
 
 // Server
 server.listen(3001, function(){
-  console.log("Der ServiceAgent wurde Erfolgreich gestartet :3");
+  console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet ~(˘▾˘~)");
 });
