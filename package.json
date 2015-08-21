@@ -23,7 +23,8 @@
     "faye-redis": "^0.2.0",
     "moment": "^2.10.3",
     "redis": "^0.12.1",
-    "reds": "^0.2.5"
+    "reds": "^0.2.5",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "jshint": "^2.8.0"

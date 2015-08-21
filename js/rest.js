@@ -8,6 +8,7 @@ var redis = require('redis'), search = require('reds');
 var express = require('express'), partialResponse = require('express-partial-response');
 var bodyParser = require('body-parser');
 var moment = require('moment');
+var _und = require('underscore');
 
 // Modul Referenzen
 var db = redis.createClient();
@@ -23,7 +24,7 @@ app.use(partialResponse());
 
 //-------------------------------------------------------
 //
-//             Post Funktion (Erstellen eines Beitrags)
+//						 Post Funktion (Erstellen eines Beitrags)
 //
 //-------------------------------------------------------
 
@@ -31,38 +32,37 @@ app.use(partialResponse());
 
 app.post('/post', function(req, res){
 
-  var newPost = req.body;
+	var newPost = req.body;
 
-  //posten in die Datenbank
-  db.incr('Counter:OverallPOSTS', function(err, rep){
+	//posten in die Datenbank
+	db.incr('Counter:OverallPOSTS', function(err, rep){
 
-    newPost.id = rep;
-    newPost.Erstellt = date;
+		newPost.id = rep;
+		newPost.Erstellt = date;
 
-    db.set('Post:'+newPost.id, JSON.stringify(newPost), function(err, rep){
-      res.json(newPost);
+		db.set('Post:'+newPost.id, JSON.stringify(newPost), function(err, rep){
+			res.json(newPost);
 
-      db.lpush('List:Posts','Post:'+newPost.id, function(err,rep){
-      });
-    });
-  });
+			db.lpush('List:Posts','Post:'+newPost.id, function(err,rep){
+			});
+		});
+	});
 });
 
 // GET - Anfragen eines Post nach ID
 
 app.get('/post/:postid', function(req, res){
-  db.get('Post:'+req.params.postid, function(err, rep){
-    if(rep){
-      var Post = rep;
-//      db.incr('Counter:OverallGET'); REST-Spezifikation ?!
-//      db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.postid);
-      res.json(JSON.parse(Post));
+	db.get('Post:'+req.params.postid, function(err, rep){
+		if(rep){
+			var Post = rep;
 
-    }
-    else {
-      res.status(404).type('text').send('Diese Seite existert nicht.');
-    }
-  });
+			res.json(JSON.parse(Post));
+
+		}
+		else {
+			res.status(404).type('text').send('Diese Seite existert nicht.');
+		}
+	});
 });
 
 
@@ -71,127 +71,51 @@ app.get('/post/:postid', function(req, res){
 
 app.put('/post/:postid', function (req,res){
 
-  db.exists('Post:'+req.params.postid, function(err,rep){
-    if (rep){
-      var updatedPost = req.body;
-      updatedPost.id = req.params.postid;
-      updatedPost.LastEdited = date;
+	db.exists('Post:'+req.params.postid, function(err,rep){
+		if (rep){
+			var updatedPost = req.body;
+			updatedPost.id = req.params.postid;
+			updatedPost.LastEdited = date;
 
-      db.set('Post:'+req.params.postid, JSON.stringify(updatedPost), function(err, rep){
-        res.json(updatedPost);
-      });
-    }
+			db.set('Post:'+req.params.postid, JSON.stringify(updatedPost), function(err, rep){
+				res.json(updatedPost);
+			});
+		}
 
-    else{
-        res.status(404).type('text').send('Der Post ist nicht vorhanden');
-    }
-  });
+		else{
+				res.status(404).type('text').send('Der Post ist nicht vorhanden');
+		}
+	});
 });
 
-// DELETE -  Löschen eines Posts mit ihren Kommentaren
+// DELETE -	Löschen eines Posts mit ihren Kommentaren
 
 app.delete('/post/:postid',function(req, res){
 
-  db.del('Post:'+req.params.postid, function(err,rep){
-    if(rep){
-      db.del('Comments:post:'+req.params.postid,function(err,rep){
-        db.del('Comments:'+req.params.postid, function(err,rep){
-          db.lrem('List:Posts', 0,'Post:'+req.params.postid,function(err,rep){
-          res.status(200).type('text').send('ok');
-          });
-        });
-      });
-    }
+	db.del('Post:'+req.params.postid, function(err,rep){
+		if(rep){
+			db.del('Comments:post:'+req.params.postid,function(err,rep){
+				db.del('Comments:'+req.params.postid, function(err,rep){
+					db.lrem('List:Posts', 0,'Post:'+req.params.postid,function(err,rep){
+					res.status(200).type('text').send('ok');
+					});
+				});
+			});
+		}
 
-    else{
-      res.status(404).type('text').send('post nicht vorhanden');
-    }
-  });
+		else{
+			res.status(404).type('text').send('post nicht vorhanden');
+		}
+	});
 });
 
 // GET /top - Anfrage des Posts mit meisten Anfragen
 
-app.get('/top', function(req, res){
 
-  if(req.query.range !== undefined){
-    db.zrevrange('Counter:OnPostGET',0,req.query.range, function(err, rep){
-      if (rep){
-      var top =  rep;
-
-        db.mget(top, function(err,rep){
-          var Post = rep;
-          if(rep){
-            res.json(rep.map(JSON.parse));
-          }
-
-          else {
-            res.status(404).type('text').send('Diese Seite existert nicht.');
-          }
-
-          });
-        }
-      });
-    }
-
-    else {
-      db.zrevrange('Counter:OnPostGET',0,0, function(err, rep){
-        if (rep)        {
-        var top =  rep;
-
-        db.mget(top, function(err,rep){
-          var Post = rep;
-          if(rep){
-            res.json(Post.map(JSON.parse));
-          }
-
-          else {
-            res.status(404).type('text').send('Diese Seite existert nicht.');
-          }
-
-        });
-      }
-    });
-  }
-  });
-
-
-// GET MostRecent - Anfrage des juengsten (bzw. neuesten) Post
-
-app.get('/mostrecent', function(req,res){
-
-  if(req.query.range !== undefined){
-    db.lrange('List:Posts',0,req.query.range,function(err,rep){
-      var recent = rep;
-        db.mget(recent, function(err, rep){
-          if(rep){
-            res.json(rep.map(JSON.parse));
-          }
-          else{
-            res.status(404).send("Fehler");
-          }
-        });
-    });
-  }
-
-  else{
-    db.lrange('List:Posts',0,0,function(err,rep){
-      var recent = rep;
-        db.get(recent, function(err, rep){
-          if(rep){
-            res.json(rep.map(JSON.parse));
-          }
-          else{
-            res.status(404).send("Fehler");
-          }
-        });
-    });
-  }
-
-});
 
 //-------------------------------------------------------
 //
-//                  Kommentar Funktion
+//									Kommentar Funktion
 //
 //-------------------------------------------------------
 
@@ -199,140 +123,143 @@ app.get('/mostrecent', function(req,res){
 
 app.post('/post/:postid/comment/', function(req, res){
 
-  var newComment = req.body;
-  newComment.ErstelltAm = date;
+	var newComment = req.body;
+	newComment.ErstelltAm = date;
 
-  db.exists('Post:'+req.params.postid, function(err, rep){
+	db.exists('Post:'+req.params.postid, function(err, rep){
 
-    if(rep){
-      db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){
-        cid = rep;
+		if(rep){
+			db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){
+				cid = rep;
 
-        db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
+				db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
 
-          db.hset('Comments:'+req.params.postid, cid, JSON.stringify(newComment), function(err, rep){
-                  res.json(newComment);
-          });
-        });
-      });
-    }
+					db.hset('Comments:'+req.params.postid, cid, JSON.stringify(newComment), function(err, rep){
+									res.json(newComment);
+					});
+				});
+			});
+		}
 
-    else res.status(404).type('text').send('Es existiert kein Post, zudem sie ein Kommentar schreiben möchten');
+		else res.status(404).type('text').send('Es existiert kein Post, zudem sie ein Kommentar schreiben möchten');
 
-  });
+	});
 });
 
 // GET - Anfragen aller Kommentare zum Post
 
 app.get('/post/:id/comment/', function(req, res){
-  db.hgetall('Comments:'+req.params.id, function(err, rep){
-    if(rep){
-      res.type('json').send(rep);
-      //res.json(JSON.parse(JSON.stringify(rep)));
+	db.hgetall('Comments:'+req.params.id, function(err, rep){
+		if(rep){
+        var comments = [];
+				var i = _und.forEach(rep, function(rep){
+					comments.push(rep);
+				});
+        var c = comments.map(JSON.parse);
+				res.json(c);
+		}
 
-    }
-
-    else {
-      res.status(404).type('text').send('Keine kommentare verfügbar');
-    }
-  });
+		else {
+			res.status(404).type('text').send('Keine kommentare verfügbar');
+		}
+	});
 });
 
 // DELETE - Löschen eines Kommentare :cid aus dem Post :pid
 
 app.delete('/post/:pid/comment/:cid',function(req, res){
 
-    db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
-      if(rep===0)res.status(400).type('text').send('klapptnicht');
-      else{
-        db.HDEL('Comments:'+req.params.pid, req.params.cid, function(err, rep){
-          res.status(200).type('text').send('Erfolgreich gelöscht!');
-        });
-      }
-    });
+		db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
+			if(rep===0)res.status(400).type('text').send('klapptnicht');
+			else{
+				db.HDEL('Comments:'+req.params.pid, req.params.cid, function(err, rep){
+					res.status(200).type('text').send('Erfolgreich gelöscht!');
+				});
+			}
+		});
 });
 
 // GET - Anfrage des Posts mit meisten Anfragen
 
 app.get('/topcommented', function(req, res){
 
-  if(req.query.range !== undefined){
-    db.zrevrange('Counter:OnPostCOMMENTS',0,req.query.range, function(err, rep){
-      if (rep){
-      var top =  rep;
+	if(req.query.range !== undefined){
+		db.zrevrange('Counter:OnPostCOMMENTS',0,req.query.range, function(err, rep){
+			if (rep){
+			var top =	rep;
 
-        db.mget(top, function(err,rep){
-          var Post = rep;
-          if(rep){
-            res.json(rep.map(JSON.parse));
-          }
+				db.mget(top, function(err,rep){
+					var Post = rep;
+					if(rep){
+						res.json(rep.map(JSON.parse));
+					}
 
-          else {
-            res.status(404).type('text').write('Diese Seite existert nicht.');
-          }
+					else {
+						res.status(404).type('text').write('Diese Seite existert nicht.');
+					}
 
-          });
-        }
-      });
-    }
+					});
+				}
+			});
+		}
 
-    else {
-      db.zrevrange('Counter:OnPostCOMMENTS',0,0, function(err, rep){
-        if (rep){
-        var top =  rep;
+		else {
+			db.zrevrange('Counter:OnPostCOMMENTS',0,0, function(err, rep){
+				if (rep){
+				var top =	rep;
 
-        db.mget(top, function(err,rep){
-          var Post = rep;
-          if(rep){
-            res.json(Post.map(JSON.parse));
-          }
+				db.mget(top, function(err,rep){
+					var Post = rep;
+					if(rep){
+						res.json(Post.map(JSON.parse));
+					}
 
-          else {
-            res.status(404).type('text').write('Diese Seite existert nicht.');
-          }
+					else {
+						res.status(404).type('text').write('Diese Seite existert nicht.');
+					}
 
-        });
-      }
-    });
-  }
-  });
+				});
+			}
+		});
+	}
+	});
 
 //-------------------------------------------------------
 //
-//                  Such Funktion /?search=
+//									Such Funktion /?search=
 //
 //-------------------------------------------------------
 app.get('/',function(req,res){
 
-  if(req.query.search !== undefined){
-  db.lrange('List:Posts',0,-1,function(err,rep){
-    if (err) res.status(404).type('text').send('Es existieren keine Posts.');
-    var list = rep; //map -> rep - JSON.parse //
+	if(req.query.search !== undefined){
+	db.lrange('List:Posts',0,-1,function(err,rep){
+		if (err) res.status(404).type('text').send('Es existieren keine Posts.');
+		var list = rep; //map -> rep - JSON.parse //
 
-    db.mget(list,function(err,rep){
-      var postindex = rep;
-      console.dir(postindex);
-      postindex.map(function(){JSON.parse;}); // TODO
-      postindex.forEach(function(str, i){ search.index(str, i); });
+		db.mget(list,function(err,rep){
+			var postindex = rep;
+			console.dir(postindex);
+			postindex.map(function(){JSON.parse;});
+			postindex.forEach(function(str, i){ search.index(str, i); });
 
 
 
-        search.query(query = req.query.search).end(function(err, ids){
-            if (err) throw err;
-            var i = 0;
-            var results= [];
+				search.query(query = req.query.search).end(function(err, ids){
+						if (err) throw err;
+						var i = 0;
+						var results= [];
 
-            ids.forEach(function(id){
-              results[i++] = postindex[id];
-            });
+						ids.forEach(function(id){
+							results[i++] = postindex[id];
+						});
 
-            res.json(results.map(JSON.parse));
+						res.json(results.map(JSON.parse));
 
-            return;
-        });
-    });
-  });
-      }
+						return;
+				});
+		});
+	});
+			}
 });
 
 
@@ -340,5 +267,5 @@ app.get('/',function(req,res){
 // localhost:3000 //
 
 app.listen(3000, function() {
-  console.log('rest started')
+	console.log('rest started')
 });
