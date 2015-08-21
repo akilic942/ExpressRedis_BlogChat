@@ -110,6 +110,87 @@ app.delete('/post/:postid',function(req, res){
 });
 
 // GET /top - Anfrage des Posts mit meisten Anfragen
+app.get('/top', function(req, res){
+
+	if(req.query.range !== undefined){
+		db.zrevrange('Counter:OnPostGET',0,req.query.range, function(err, rep){
+			if (rep){
+			var top =	rep;
+
+				db.mget(top, function(err,rep){
+					var Post = rep;
+					if(rep){
+						res.json(rep.map(JSON.parse));
+					}
+
+					else {
+						res.status(404).type('text').send('Diese Seite existert nicht.');
+					}
+
+					});
+				}
+			});
+		}
+
+		else {
+			db.zrevrange('Counter:OnPostGET',0,0, function(err, rep){
+				if (rep)				{
+				var top =	rep;
+
+				db.mget(top, function(err,rep){
+					var Post = rep;
+					if(rep){
+						res.json(Post.map(JSON.parse));
+					}
+
+					else {
+						res.status(404).type('text').send('Diese Seite existert nicht.');
+					}
+
+				});
+			}
+		});
+	}
+	});
+
+
+// GET MostRecent - Anfrage des juengsten (bzw. neuesten) Post
+
+app.get('/mostrecent', function(req,res){
+
+	if(req.query.range !== undefined){
+		db.lrange('List:Posts',0,req.query.range,function(err,rep){
+			var recent = rep;
+				db.mget(recent, function(err, rep){
+					if(rep){
+						res.json(rep.map(JSON.parse));
+					}
+					else{
+						res.status(404).send("Fehler");
+					}
+				});
+		});
+	}
+
+	else{
+		db.lrange('List:Posts',0,0,function(err,rep){
+			var recent = rep;
+				db.get(recent, function(err, rep){
+					if(rep){
+						res.json(rep.map(JSON.parse));
+					}
+					else{
+						res.status(404).send("Fehler");
+					}
+				});
+		});
+	}
+
+
+});
+
+
+
 
 
 
