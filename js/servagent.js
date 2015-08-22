@@ -16,10 +16,12 @@ var app = express();
 
 
 var server = http.createServer(app);
-var jsonParser = bodyParser.json();
 var db = redis.createClient();
   //var client = faye.Client('localhost:3000/faye');
-
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+app.use(bodyParser.json());
 app.engine('ejs', engine);
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
@@ -27,7 +29,7 @@ app.set('view engine', 'ejs');
 
 // GET Post
 
-app.get('/', jsonParser, function(req, res){
+app.get('/', bodyParser.json(), function(req, res){
 
 
     var options = {
@@ -41,12 +43,10 @@ app.get('/', jsonParser, function(req, res){
     };
 
     var externalRequest = http.request(options, function(externalResponse){
-      console.log('external Connected');
       externalResponse.on('data',function(chunk){
 
         var data = JSON.parse(chunk);
 
-        console.dir(data);
 
 
         res.render('index', {
@@ -65,7 +65,7 @@ app.get('/', jsonParser, function(req, res){
 
 
 
-app.get('/blog/:id', jsonParser, function(req, res){
+app.get('/blog/:id', bodyParser.json(), function(req, res){
   var blogid = req.params.id;
 
       var options = {
@@ -79,12 +79,10 @@ app.get('/blog/:id', jsonParser, function(req, res){
       };
 
       var externalRequest = http.request(options, function(externalResponse){
-        console.log('external Connected');
         externalResponse.on('data',function(chunk){
 
           var data = JSON.parse(chunk);
 
-          console.dir(data);
           db.incr('Counter:OverallGET');
           db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.id);
 
@@ -105,7 +103,7 @@ app.get('/blog/:id', jsonParser, function(req, res){
 
 
 
-app.get('/blog/:id/comments', jsonParser, function(req,res){
+app.get('/blog/:id/comments', bodyParser.json(), function(req,res){
   var blogid = req.params.id;
 
   var options = {
@@ -124,14 +122,58 @@ app.get('/blog/:id/comments', jsonParser, function(req,res){
 
       var data = JSON.parse(chunk);
 
-    console.dir(data);
 
-    res.render('comments',{data:data});
+    res.render('comments',{
+      data:data,
+      blogid:blogid
+
+    });
 
     });
 
   });
     externalRequest.end();
+
+});
+
+app.post('/blog/:id/comments', function(req,res){
+  var blogid = req.params.id;
+    console.log(req.body);
+
+var postData = JSON.stringify(
+    req.body
+  );
+
+  var options = {
+      host: 'localhost',
+      port: '3000',
+      path: '/post/'+blogid+'/comment',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData),
+        'Cache-Control': 'no-cache',
+
+      }
+  };
+
+  var req = http.request(options, function(res) {
+    console.log('STATUS: ' + res.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
+    });
+  });
+
+  req.on('error', function(e) {
+    console.log('problem with request: ' + e.message);
+  });
+
+  // write data to request body
+  req.write(postData);
+  req.end();
+
 
 });
 
