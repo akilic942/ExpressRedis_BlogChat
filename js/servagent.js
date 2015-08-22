@@ -1,6 +1,7 @@
 
 //Module
 var ejs = require('ejs');
+var engine = require('ejs-mate');
 var redis = require('redis');
 var faye = require('faye'), fayeRedis = require('faye-redis');
 var http = require('http');
@@ -8,25 +9,31 @@ var express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 
-
 //Modul Referenzen
 var app = express();
+
+
 var server = http.createServer(app);
 var jsonParser = bodyParser.json();
 var db = redis.createClient();
   //var client = faye.Client('localhost:3000/faye');
 
+app.engine('ejs', engine);
+app.set('views',__dirname + '/views');
+app.set('view engine', 'ejs');
+
 
 // GET Post
 
+app.get('/', jsonParser, function(req, res){
+
+    res.render('index');
+
+  });
+
+
 app.get('/blog/:id', jsonParser, function(req, res){
   var blogid = req.params.id;
-
-  fs.readFile('./js/service/blogno.ejs', {encoding: 'utf-8'}, function(err, filestring){
-    if (err)
-      throw err;
-
-    else {
 
       var options = {
           host: 'localhost',
@@ -48,21 +55,16 @@ app.get('/blog/:id', jsonParser, function(req, res){
           db.incr('Counter:OverallGET');
           db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.id);
 
-          var html = ejs.render(filestring, data);
-          res.setHeader('content-type', 'text/html');
-          res.writeHead(200);
-          res.write(html);
-          res.end();
+
+          res.render('blogno', data);
+
+
 
         });
 
       });
 
       externalRequest.end();
-
-    }
-
-  });
 
 });
 
@@ -71,48 +73,30 @@ app.get('/blog/:id', jsonParser, function(req, res){
 app.get('/blog/:id/comments', jsonParser, function(req,res){
   var blogid = req.params.id;
 
-  fs.readFile('./js/service/comments.ejs', {encoding: 'utf-8'}, function(err, filestring){
-    if (err)
-      throw err;
+  var options = {
+      host: 'localhost',
+      port: '3000',
+      path: '/post/'+blogid+'/comment',
+      method: 'GET',
+      headers: {
+          accept: 'application/json'
+      }
+  };
 
-    else {
+  var externalRequest = http.request(options, function(externalResponse){
+    console.log('external Connected');
+    externalResponse.on('data',function(chunk){
 
-      var options = {
-          host: 'localhost',
-          port: '3000',
-          path: '/post/'+ blogid + '/comment/',
-          method: 'GET',
-          headers: {
-              accept: 'application/json'
-          }
-      };
+      var data = JSON.parse(chunk);
 
-    var externalRequest = http.request(options, function(externalResponse){
-      console.log('external Connected');
-      externalResponse.on('data',function(chunk){
+    console.dir(data);
 
-        var data = JSON.parse(chunk);
-
-        console.dir(data);
-
-        var html = ejs.render(filestring, {
-          data: data
-          });
-
-        res.setHeader('content-type', 'text/html');
-        res.writeHead(200);
-        res.write(html);
-        res.end();
-
-      });
+    res.render('comments',{data:data});
 
     });
 
-    externalRequest.end();
-
-    }
-
   });
+    externalRequest.end();
 
 });
 
@@ -136,5 +120,5 @@ app.get('/blog/:id/comments', jsonParser, function(req,res){
 
 // Server
 server.listen(3001, function(){
-  console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet ~(˘▾˘~)");
 });
+  console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet (localhost:3001) ~(˘▾˘~)");

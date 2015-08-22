@@ -348,5 +348,5 @@ app.get('/',function(req,res){
 // localhost:3000 //
 
 app.listen(3000, function() {
-	console.log('(~˘▾˘)~ Der Rest-Service wurde Erfolgreich gestartet ~(˘▾˘~)')
+	console.log('(~˘▾˘)~ Der Rest-Service wurde Erfolgreich gestartet (localhost:3000) ~(˘▾˘~)')
 });
