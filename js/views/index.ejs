@@ -1,1 +1,24 @@
 <% layout('layout') -%>
+<% if (!data.response) { %>
+      <% data.forEach(function(obj) { %>
+        <div class="well">
+          <ul>
+            <div class="page-header">
+              <a href="/blog/<%=obj.id%>"> <%=obj.Titel%> </a>
+
+
+                <small>von <%= obj.Author %>
+                </small>
+              </h1>
+            <small>PostID: <%=obj.id %>, Erstellt am  <%=obj.Erstellt %>
+            </small>
+
+               </div>
+                <%=obj.POST %>
+                <hr>
+
+                </ul>
+            </div>
+
+      <% }); %>
+<% } %>

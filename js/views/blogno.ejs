@@ -1,10 +1,35 @@
 <% layout('layout') -%>
-      <ul>
-          <b>Author: <%= Author %> </b>,
-          Erstellt am <%=Erstellt %>,
-          BlogID: <%=id %> <hr>
-            <%=POST %>
-            <hr>
-            <%= Zutaten %>
-            <hr>
-        </ul>
+
+<script>
+$(document).ready(function(){
+	$( "#comments" ).load('/blog/'+<%= blogid %>+'/comments');
+});
+</script>
+
+<div class="well">
+	<% if (!data.response) { %>
+			<ul>
+				<div class="page-header">
+					<h1><%= data.Titel %> </b>
+						<small>von <%= data.Author %>
+            </small>
+	        </h1>
+        <small>PostID: <%=data.id %>, Erstellt am  <%=data.Erstellt %>
+        </small>
+
+				   </div>
+						<%=data.POST %>
+						<hr>
+						<%= data.Zutaten %>
+						<hr>
+				</ul>
+				<% } %>
+
+
+				<div id="container">
+					<div class="row">
+
+						<div id="comments" class="page-header"></div>
+			</div>
+		</div>
+	</div>

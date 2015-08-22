@@ -56,11 +56,11 @@ app.get('/post/:postid', function(req, res){
 		if(rep){
 			var Post = rep;
 
-			res.json(JSON.parse(Post));
+			res.status(200).json(JSON.parse(Post));
 
 		}
 		else {
-			res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
+			res.status(404).type('text').send({response:'Diese Seite existert nicht. ¯_(ツ)_/¯'});
 		}
 	});
 });
@@ -241,7 +241,7 @@ app.get('/post/:id/comment/', function(req, res){
 		}
 
 		else {
-			res.status(404).type('text').send('Keine kommentare verfügbar');
+			res.status(404).type('text').send({response: 'Keine Kommentare verfügbar'});
 		}
 	});
 });

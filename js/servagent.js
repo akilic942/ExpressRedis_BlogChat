@@ -5,9 +5,11 @@ var engine = require('ejs-mate');
 var redis = require('redis');
 var faye = require('faye'), fayeRedis = require('faye-redis');
 var http = require('http');
-var express = require('express');
+var express = require('express'), helpers = require('express-helpers')(app);
 var fs = require('fs');
 var bodyParser = require('body-parser');
+
+
 
 //Modul Referenzen
 var app = express();
@@ -27,9 +29,40 @@ app.set('view engine', 'ejs');
 
 app.get('/', jsonParser, function(req, res){
 
-    res.render('index');
 
-  });
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/mostrecent?range=100',
+        method: 'GET',
+        headers: {
+            accept: 'application/json'
+        }
+    };
+
+    var externalRequest = http.request(options, function(externalResponse){
+      console.log('external Connected');
+      externalResponse.on('data',function(chunk){
+
+        var data = JSON.parse(chunk);
+
+        console.dir(data);
+
+
+        res.render('index', {
+        data:data
+        });
+
+      });
+
+    });
+
+    externalRequest.end();
+
+});
+
+
+
 
 
 app.get('/blog/:id', jsonParser, function(req, res){
@@ -56,7 +89,9 @@ app.get('/blog/:id', jsonParser, function(req, res){
           db.zincrby('Counter:OnPostGET',1,'Post:'+req.params.id);
 
 
-          res.render('blogno', data);
+          res.render('blogno', {data:data,
+          blogid:blogid
+          });
 
 
 
