@@ -27,7 +27,7 @@ app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
 
 
-// GET Post
+// GET
 
 app.get('/', bodyParser.json(), function(req, res){
 
@@ -136,13 +136,167 @@ app.get('/blog/:id/comments', bodyParser.json(), function(req,res){
 
 });
 
+
+app.get('/admin/newentry', bodyParser.json(), function(req,res){
+
+    res.render('admin/newentry');
+
+});
+
+app.post('/admin/newentry', function(req,res){
+  var blogid = req.params.id;
+    console.log(req.body);
+
+  var postData = JSON.stringify(
+    req.body
+  );
+
+  var options = {
+      host: 'localhost',
+      port: '3000',
+      path: '/post/',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData),
+        'Cache-Control': 'no-cache',
+
+      }
+  };
+
+  var req = http.request(options, function(res) {
+    console.log('STATUS: ' + res.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
+    });
+  });
+
+  req.on('error', function(e) {
+    console.log('problem with request: ' + e.message);
+  });
+
+  // write data to request body
+  req.write(postData);
+  res.redirect('../..');
+  req.end();
+
+
+});
+
+
+app.get('/admin/alterentry/:id', bodyParser.json(), function(req,res){
+
+  var blogid = req.params.id;
+
+
+      if(req.query.action === undefined){
+          var options = {
+              host: 'localhost',
+              port: '3000',
+              path: '/post/'+blogid,
+              method: 'GET',
+              headers: {
+                  accept: 'application/json'
+              }
+          };
+
+          var externalRequest = http.request(options, function(externalResponse){
+            externalResponse.on('data',function(chunk){
+
+              var data = JSON.parse(chunk);
+
+              res.render('admin/alterentry',{
+                blogid:blogid,
+                data:data
+                });
+
+
+            });
+
+      });
+
+      externalRequest.end();
+
+      }
+});
+
+app.post('/admin/alterentry/:id', bodyParser.json(), function(req,res){
+console.dir('richtig!');
+var blogid = req.params.id;
+
+if(req.body.action == 'SaveChanges'){
+
+  var postData = JSON.stringify(
+    req.body
+  );
+
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/post/'+blogid,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData),
+          'Cache-Control': 'no-cache',
+        }
+    };
+
+    var req = http.request(options, function(res) {
+      console.log('STATUS: ' + res.statusCode);
+      console.log('HEADERS: ' + JSON.stringify(res.headers));
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+      });
+    });
+
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
+
+    // write data to request body
+    req.write(postData);
+    res.redirect('/blog/'+blogid);
+    req.end();
+
+}
+
+
+if(req.body.action == 'Delete'){
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/post/'+blogid,
+        method: 'DELETE',
+        headers: {
+            accept: 'application/json'
+        }
+    };
+
+    var externalRequest = http.request(options, function(externalResponse){
+
+      res.redirect('../..');
+      });
+
+externalRequest.end();
+}
+
+});
+
+
+
+
+
 app.post('/blog/:id/comments', function(req,res){
   var blogid = req.params.id;
     console.log(req.body);
 
-var postData = JSON.stringify(
+    var postData = JSON.stringify(
     req.body
-  );
+    );
 
   var options = {
       host: 'localhost',
@@ -172,6 +326,7 @@ var postData = JSON.stringify(
 
   // write data to request body
   req.write(postData);
+  res.redirect('/blog/'+blogid);
   req.end();
 
 
@@ -197,5 +352,5 @@ var postData = JSON.stringify(
 
 // Server
 server.listen(3001, function(){
-});
   console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet (localhost:3001) ~(˘▾˘~)");
+});

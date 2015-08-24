@@ -33,3 +33,25 @@
 						</div>
 </fieldset>
 </form>
+
+
+<script>
+$(document).ready(function() {
+
+
+$('#contactForm')
+
+$.ajax({
+		url: $form.attr('action'),
+		type: 'POST',
+		data: $form.serialize(),
+		contentType: 'application/json'
+
+		success: function(result) {
+			
+		}
+});
+
+
+});
+</script>

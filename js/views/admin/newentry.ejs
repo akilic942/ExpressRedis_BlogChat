@@ -1,0 +1,63 @@
+<% layout('layout') -%>
+<form id="newentry" method="POST" action="/admin/newentry/" enctype='application/json'>
+	<fieldset>
+		<legend> Neuer Beitrag </legend>
+
+						<div class="container">
+							<div class="jumbotron">
+
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="input-group">
+											<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+											<input name="Author" type="text" class="form-control" placeholder="Author" id="name" required>
+
+									</div>
+
+							</div>
+
+							<div class="col-xs-6">
+									<label class="sr-only" for="inputEmail"></label>
+									<input name="Titel" type="text" class="form-control" id="mail" placeholder="Titel" id="mail" required>
+
+									<br>
+							</div>
+
+							<div class="col-xs-12">
+								<div class="form-group">
+										<textarea name="POST" class="form-control" rows=10 required id="message"></textarea>
+										<input name="Zutaten" type="text" class="form-control" placeholder="Zutat" id="zutaten" required>
+
+										<br>
+									<button type="submit" class="btn btn-default" style="float: right" id="submit"><span class="glyphicon glyphicon-comment" ></span> Kommentar eintragen</button> *Ihre E-Mail Adresse wird nicht veröffentlicht
+								</div>
+							</div>
+							<hr>
+							</div>
+
+							</div>
+						</div>
+</fieldset>
+</form>
+
+
+<script>
+$(document).ready(function() {
+
+
+$('#contactForm')
+
+$.ajax({
+		url: $form.attr('action'),
+		type: 'POST',
+		data: $form.serialize(),
+		contentType: 'application/json'
+
+		success: function(result) {
+
+		}
+});
+
+
+});
+</script>
