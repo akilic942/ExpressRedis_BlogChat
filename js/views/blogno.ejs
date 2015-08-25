@@ -9,9 +9,10 @@ $(document).ready(function(){
 <div class="well">
 	<% if (!data.response) { %>
 			<ul>
-				<a href="/admin/alterentry/<%=data.id%>"> Edit </a>
+
 				<div class="page-header">
-					<h1><%= data.Titel %> </b>
+				<a href="/admin/alterentry/<%=data.id%>" class="btn btn-default btn-xs" style="float:right"> Edit </a>
+					<h1><b><%= data.Titel %> </b><br>
 						<small>von <%= data.Author %>
             </small>
 	        </h1>
@@ -30,7 +31,7 @@ $(document).ready(function(){
 				<div id="container">
 					<div class="row">
 
-						<div id="comments" class="page-header"></div>
+						<div id="comments" > </div>
 			</div>
 		</div>
 	</div>

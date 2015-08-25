@@ -1,0 +1,35 @@
+
+
+<% if (!data.response) { %>
+
+<% data.forEach(function(obj) { %>
+<form id="deleteComment" method="POST" action="/admin/alterentry/<%= blogid %>/comments/<%= obj.id %>" enctype='application/json'>
+  <fieldset>
+  <div class="col-xs-12">
+  <div class="container">
+  <div class="row">
+  <div class="col-sm-">
+  </div><!-- /col-sm-12 -->
+  </div><!-- /row -->
+  </div>
+  <div class="col-sm-10">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+
+  <strong> <%= obj.Name %></strong> <span class="text-muted">commented	<%= obj.ErstelltAm %></span>
+
+  <span class="text-muted" style="float:right;margin-left:10px" > <%= obj.id %> </span>
+
+  <input type="submit" class="btn btn-danger btn-xs" style="float: right" id="deleteComment" name="action" value="DeleteC"> </input>
+
+  </div>
+  <div class="panel-body">
+    <%= obj.Kommentar %>
+  </div><!-- /panel-body -->
+  </div><!-- /panel panel-default -->
+  </div><!-- /col-sm-5 -->
+</div>
+</fieldset>
+</form>
+<% }); %>
+<% } %>

@@ -124,8 +124,7 @@ app.get('/top', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
-					}
+						res.status(404).type('text').send({response: 'Keine Posts verfügbar'});					}
 
 					});
 				}
@@ -144,7 +143,7 @@ app.get('/top', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').send('Diese Seite existert nicht. ¯_(ツ)_/¯');
+						res.status(404).type('text').send({response: 'Keine Posts verfügbar'});
 					}
 
 				});
@@ -166,7 +165,7 @@ app.get('/mostrecent', function(req,res){
 						res.json(rep.map(JSON.parse));
 					}
 					else{
-						res.status(404).send("Fehler");
+						res.status(404).type('text').send({response: 'Keine Posts verfügbar'});
 					}
 				});
 		});
@@ -180,7 +179,7 @@ app.get('/mostrecent', function(req,res){
 						res.json(rep.map(JSON.parse));
 					}
 					else{
-						res.status(404).send("Fehler");
+						res.status(404).type('text').send({response: 'Keine Posts verfügbar'});
 					}
 				});
 		});
@@ -205,27 +204,29 @@ app.get('/mostrecent', function(req,res){
 app.post('/post/:postid/comment/', function(req, res){
 
 	var newComment = req.body;
-	newComment.ErstelltAm = date;
+		newComment.ErstelltAm = date;
 
-	db.exists('Post:'+req.params.postid, function(err, rep){
+		db.exists('Post:'+req.params.postid, function(err, rep){
 
-		if(rep){
-			db.zincrby('Counter:OnPostCOMMENTS',1,'Post:'+req.params.postid, function(err, rep){
-				cid = rep;
+			if(rep){
+				db.incr('CounterOnPost:'+req.params.postid+':Comments', function(err, rep){
+					cid = rep;
+					newComment.id = rep;
 
-				db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
+					db.sadd('Comments:post:'+req.params.postid, cid,function(err, rep){
 
-					db.hset('Comments:'+req.params.postid, cid, JSON.stringify(newComment), function(err, rep){
-									res.json(newComment);
+						db.hset('Comments:'+req.params.postid, cid, JSON.stringify(newComment), function(err, rep){
+										res.json(newComment);
+						});
 					});
-				});
 			});
 		}
 
 		else res.status(404).type('text').send('Es existiert kein Post, zudem sie ein Kommentar schreiben möchten');
 
+		});
 	});
-});
+
 
 // GET - Anfragen aller Kommentare zum Post
 
@@ -253,6 +254,7 @@ app.delete('/post/:pid/comment/:cid',function(req, res){
 		db.SREM('Comments:post:'+req.params.pid, req.params.cid, function(err, rep){
 			if(rep===0)res.status(400).type('text').send('klapptnicht');
 			else{
+
 				db.HDEL('Comments:'+req.params.pid, req.params.cid, function(err, rep){
 					res.status(200).type('text').send('Erfolgreich gelöscht!');
 				});

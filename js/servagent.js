@@ -61,7 +61,37 @@ app.get('/', bodyParser.json(), function(req, res){
 
 });
 
+app.get('/top', bodyParser.json(), function(req, res){
 
+
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/top?range=25',
+        method: 'GET',
+        headers: {
+            accept: 'application/json'
+        }
+    };
+
+    var externalRequest = http.request(options, function(externalResponse){
+      externalResponse.on('data',function(chunk){
+
+        var data = JSON.parse(chunk);
+
+
+
+        res.render('index', {
+        data:data
+        });
+
+      });
+
+    });
+
+    externalRequest.end();
+
+});
 
 
 
@@ -223,7 +253,6 @@ app.get('/admin/alterentry/:id', bodyParser.json(), function(req,res){
 });
 
 app.post('/admin/alterentry/:id', bodyParser.json(), function(req,res){
-console.dir('richtig!');
 var blogid = req.params.id;
 
 if(req.body.action == 'SaveChanges'){
@@ -327,13 +356,69 @@ app.post('/blog/:id/comments', function(req,res){
   // write data to request body
   req.write(postData);
   res.redirect('/blog/'+blogid);
-  req.end();
+  res.end();
+
 
 
 });
 
 
+app.get('/admin/alterentry/:id/comments', bodyParser.json(), function(req,res){
+  var blogid = req.params.id;
 
+  var options = {
+      host: 'localhost',
+      port: '3000',
+      path: '/post/'+blogid+'/comment',
+      method: 'GET',
+      headers: {
+          accept: 'application/json'
+      }
+  };
+
+  var externalRequest = http.request(options, function(externalResponse){
+    console.log('external Connected');
+    externalResponse.on('data',function(chunk){
+
+      var data = JSON.parse(chunk);
+
+
+    res.render('admin/alterentry_comments',{
+      data:data,
+      blogid:blogid
+
+    });
+
+    });
+
+  });
+    externalRequest.end();
+
+});
+
+app.post('/admin/alterentry/:id/comments/:cid', bodyParser.json(), function(req,res){
+var blogid = req.params.id;
+
+  if(req.body.action == 'DeleteC'){
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/post/'+blogid+'/comment/'+req.params.cid,
+        method: 'delete',
+        headers: {
+            accept: 'application/json'
+        }
+    };
+
+    var externalRequest = http.request(options, function(externalResponse){
+
+      res.redirect('/admin/alterentry/req.params.id');
+      });
+
+      externalRequest.end();
+    }
+
+});
 
 
 

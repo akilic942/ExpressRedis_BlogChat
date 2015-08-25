@@ -36,22 +36,14 @@
 
 
 <script>
-$(document).ready(function() {
+	$(document).ready(function() {
+			$.ajax({
+					url: $form.attr('action'),
+					type: 'POST',
+					data: $form.serialize(),
+					contentType: 'application/json'
+			});
 
 
-$('#contactForm')
-
-$.ajax({
-		url: $form.attr('action'),
-		type: 'POST',
-		data: $form.serialize(),
-		contentType: 'application/json'
-
-		success: function(result) {
-			
-		}
-});
-
-
-});
+	});
 </script>

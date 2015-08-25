@@ -1,4 +1,7 @@
+
+
 <% layout('layout') -%>
+<div class = "well">
 <form id="newentry" method="POST" action="/admin/alterentry/<%= blogid %>" enctype='application/json'>
 	<fieldset>
 		<legend> Beitrag ändern </legend>
@@ -34,30 +37,16 @@
 							</div>
 							<hr>
 							</div>
-
 							</div>
 						</div>
 </fieldset>
 </form>
-
+<div id="comments" > </div>
+</div>
 
 <script>
 $(document).ready(function() {
-
-
-$('#contactForm')
-
-$.ajax({
-		url: $form.attr('action'),
-		type: 'POST',
-		data: $form.serialize(),
-		contentType: 'application/json'
-
-		success: function(result) {
-
-		}
-});
-
+$( "#comments" ).load('/admin/alterentry/'+<%= blogid %>+'/comments');
 
 });
 </script>
