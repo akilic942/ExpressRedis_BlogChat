@@ -326,8 +326,8 @@ app.get('/',function(req,res){
 			postindex.forEach(function(str, i){ search.index(str, i); });
 
 
+			search.query(query = req.query.search).end(function(err, ids){
 
-				search.query(query = req.query.search).end(function(err, ids){
 						if (err) throw err;
 						var i = 0;
 						var results= [];
@@ -350,5 +350,5 @@ app.get('/',function(req,res){
 // localhost:3000 //
 
 app.listen(3000, function() {
-	console.log('(~˘▾˘)~ Der Rest-Service wurde Erfolgreich gestartet (localhost:3000) ~(˘▾˘~)')
+	console.log('(~˘▾˘)~ Der Rest-Service wurde Erfolgreich gestartet (localhost:3000) ~(˘▾˘~)');
 });

@@ -11,9 +11,22 @@
         </div>
 
         <ul class="nav navbar-nav">
-            <li><a href="/top">Top 10</a></li>
+            <li><a href="/top">Toplist</a></li>
         <li><a href="/admin/newentry">Neuer Blogeintrag</a></li>
         </ul>
+
+        <form id="newentry" method="get" action="/">
+          <div class="col-md-6" style="margin-top:10px;float:right;margin-right:-100px">
+                  <div class="input-group col-md-8">
+                      <input type="text" class="form-control input-sm" placeholder="Suche" name="search"/>
+                      <span class="input-group-btn">
+                          <button class="btn btn-info btn-sm" type="button">
+                              <i class="glyphicon glyphicon-search"></i>
+                          </button>
+                      </span>
+                  </div>
+              </div>
+            </form>
 
     </div>
 </nav>

@@ -31,6 +31,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', bodyParser.json(), function(req, res){
 
+  if(req.query.search === undefined){
 
     var options = {
         host: 'localhost',
@@ -58,6 +59,37 @@ app.get('/', bodyParser.json(), function(req, res){
     });
 
     externalRequest.end();
+  }
+
+  else{
+    var options = {
+        host: 'localhost',
+        port: '3000',
+        path: '/?search='+encodeURIComponent(req.query.search),
+        method: 'GET',
+        headers: {
+            accept: 'application/json'
+        }
+    };
+
+    var externalRequest = http.request(options, function(externalResponse){
+      externalResponse.on('data',function(chunk){
+
+        var data = JSON.parse(chunk);
+
+
+
+        res.render('index', {
+        data:data
+        });
+
+      });
+
+    });
+
+    externalRequest.end();
+  }
+
 
 });
 
@@ -419,7 +451,6 @@ var blogid = req.params.id;
     }
 
 });
-
 
 
 
