@@ -1,0 +1,15 @@
+  <script type="text/javascript" src="http://localhost:3001/faye/client.js">  </script>
+  <script>
+
+  var client = new Faye.Client("http://localhost:3001/faye/");
+
+  var subscription = client.subscribe('/Neuigkeiten', function(message){
+    var div = document.getElementById('messages')
+    div.innerHTML ='<p>'+ message.author + message.post +'</p>';
+
+  });
+
+
+  </script>
+
+  <div id="messages"> </div>

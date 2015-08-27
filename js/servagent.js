@@ -1,9 +1,9 @@
 
 //Module
+var faye = require('faye'), fayeRedis = require('faye-redis');
 var ejs = require('ejs');
 var engine = require('ejs-mate');
 var redis = require('redis');
-var faye = require('faye'), fayeRedis = require('faye-redis');
 var http = require('http');
 var express = require('express'), helpers = require('express-helpers')(app);
 var fs = require('fs');
@@ -12,16 +12,35 @@ var bodyParser = require('body-parser');
 
 
 //Modul Referenzen
-var app = express();
-
-
-var server = http.createServer(app);
 var db = redis.createClient();
-  //var client = faye.Client('localhost:3000/faye');
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+var app = express();
+var server = http.createServer(app);
+var client = new faye.Client("http://localhost:3001/faye");
+
+
+var bayeux = new faye.NodeAdapter({
+  mount: '/faye',
+  timeout: 45,
+
+  engine: {
+   type:   fayeRedis,
+   host:   'localhost',
+   // more options
+ }
+});
+
+var publication = client.publish( 'Neuigkeiten' , function(message) {
+  console.log(message);
+});
+
+
+bayeux.attach(server);
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 app.engine('ejs', engine);
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
@@ -453,8 +472,47 @@ var blogid = req.params.id;
 });
 
 
+app.get('/admin/publish/:id', bodyParser.json(), function(req,res){
+
+  var blogid = req.params.id;
 
 
+      if(req.query.action === undefined){
+          var options = {
+              host: 'localhost',
+              port: '3000',
+              path: '/post/'+blogid,
+              method: 'GET',
+              headers: {
+                  accept: 'application/json'
+              }
+          };
+
+          var externalRequest = http.request(options, function(externalResponse){
+            externalResponse.on('data',function(chunk){
+
+              var data = JSON.parse(chunk);
+
+              res.render('admin/publish',{
+                blogid:blogid,
+                data:data
+                });
+
+
+            });
+
+      });
+
+      externalRequest.end();
+
+      }
+});
+
+app.get('/sub/news', bodyParser.json(), function(req,res){
+
+    res.render('sub/news');
+
+});
 
 
 
@@ -467,6 +525,7 @@ var blogid = req.params.id;
 
 
 // Server
+
 server.listen(3001, function(){
   console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet (localhost:3001) ~(˘▾˘~)");
 });
