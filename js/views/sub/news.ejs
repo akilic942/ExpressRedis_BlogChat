@@ -6,8 +6,8 @@
   var client = new Faye.Client("http://localhost:3001/faye/");
 
   var subscription = client.subscribe('/news', function(message){
-    var div = document.getElementById('messages')
-    div.innerHTML ='<p>'+ message.name '<br>' + message.post +'</p>';
+    var div = document.getElementById('messages');
+    div.innerHTML +='<p>'+ message.name + '<br>' + message.post +'</p>';
 
   });
 
