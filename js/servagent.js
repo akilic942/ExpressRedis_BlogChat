@@ -463,7 +463,7 @@ var blogid = req.params.id;
 
     var externalRequest = http.request(options, function(externalResponse){
 
-      res.redirect('/admin/alterentry/req.params.id');
+      res.redirect('/admin/alterentry/'+req.params.id);
       });
 
       externalRequest.end();
