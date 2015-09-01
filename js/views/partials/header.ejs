@@ -1,6 +1,6 @@
 <!-- views/partials/header.ejs -->
-
 <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+
     <div class="container-fluid">
 
         <div class="navbar-header">
@@ -15,17 +15,20 @@
         <li><a href="/admin/newentry">Neuer Blogeintrag</a></li>
         </ul>
 
-        <form id="newentry" method="get" action="/">
-          <div class="col-md-6" style="margin-top:10px;float:right;margin-right:-100px">
+        <form id="searchbar" method="get" action="/">
+
+          <div class="col-md-6" style="margin-top:5px;float:right;margin-right:5px">
                   <div class="input-group col-md-8">
-                      <input type="text" class="form-control input-sm" placeholder="Suche" name="search"/>
                       <span class="input-group-btn">
+                      <input type="text" class="form-control input-sm" placeholder="Suche" name="search"/>
                           <button class="btn btn-info btn-sm" type="button">
                               <i class="glyphicon glyphicon-search"></i>
                           </button>
                       </span>
                   </div>
               </div>
+
+
             </form>
 
     </div>

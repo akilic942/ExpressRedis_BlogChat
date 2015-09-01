@@ -23,8 +23,8 @@
 								<div class="form-group">
 										<textarea name="Kommentar" class="form-control" rows=10 required id="message"></textarea>
 										<br>
-									<button type="submit" class="btn btn-default" style="float: right" id="submit"><span class="glyphicon glyphicon-comment" ></span> Kommentar eintragen</button> *Ihre E-Mail Adresse wird nicht veröffentlicht
-								</div>
+									<button type="submit" class="btn btn-default" style="float: right" id="submit"><span class="glyphicon glyphicon-comment" ></span> Kommentar eintragen</button>
+							</div>
 							</div>
 							<hr>
 							</div>
@@ -33,17 +33,3 @@
 						</div>
 </fieldset>
 </form>
-
-
-<script>
-	$(document).ready(function() {
-			$.ajax({
-					url: $form.attr('action'),
-					type: 'POST',
-					data: $form.serialize(),
-					contentType: 'application/json'
-			});
-
-
-	});
-</script>

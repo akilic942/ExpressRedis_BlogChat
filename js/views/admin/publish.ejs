@@ -1,162 +1,76 @@
-									<!DOCTYPE html PUBLIC >
-									     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-
-									<html lang="de">
-									<head>
-										<!-- views/partials/head.ejs -->
-
-										<meta charset="UTF-8">
-										<title>Accuratus Blog</title>
-
-										<!-- CSS (load bootstrap from a CDN) -->
-
-										<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-										<style>
-										    body    { padding-top:50px; }
-										</style>
-
-									   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-									</head>
-									<body class="container">
-
-									    <header>
-												<!-- views/partials/header.ejs -->
-
-												<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-												    <div class="container-fluid">
-
-												        <div class="navbar-header">
-												            <a class="navbar-brand" href="/">
-												                <span class="glyphicon glyphicon glyphicon-heart"></span>
-												                Accuratus
-												            </a>
-												        </div>
-
-												        <ul class="nav navbar-nav">
-												            <li><a href="/top">Toplist</a></li>
-												        <li><a href="/admin/newentry">Neuer Blogeintrag</a></li>
-												        </ul>
-
-												        <form id="newentry" method="get" action="/">
-												          <div class="col-md-6" style="margin-top:10px;float:right;margin-right:-100px">
-												                  <div class="input-group col-md-8">
-												                      <input type="text" class="form-control input-sm" placeholder="Suche" name="search"/>
-												                      <span class="input-group-btn">
-												                          <button class="btn btn-info btn-sm" type="button">
-												                              <i class="glyphicon glyphicon-search"></i>
-												                          </button>
-												                      </span>
-												                  </div>
-												              </div>
-												            </form>
-
-												    </div>
-												</nav>
-									    </header>
-
-									    <main>
-									        <div class="jumbotron">
-
-														<script type="text/javascript" src="http://localhost:3001/faye/client.js"> </script>
-														<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-														<script>
-														var client = new Faye.Client("http://localhost:3001/faye");
-														function doit(){
+<% layout('layout') -%>
 
 
 
-																			alert("Nachricht wurde versendet.");
+	<script type="text/javascript" src="http://localhost:3001/faye/client.js"> </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+			var client = new Faye.Client("http://localhost:3001/faye");
+			function publish(){
 
-																							var publication = client.publish( '/Neuigkeiten' , {
-																								author: document.getElementById('name').innerHTML,
-																								titel: document.getElementById('titel').innerHTML,
-																								post: document.getElementById('message').innerHTML,
-																								zutaten: document.getElementById('zutaten').innerHTML
-																							});
+				var x = document.getElementById("publishPlace").selectedIndex;
 
-																							publication.then(
+				var publication = client.publish( document.getElementsByTagName("option")[x].value, {
+						author: document.getElementById('name').innerHTML,
+						titel: document.getElementById('titel').innerHTML,
+						post: document.getElementById('message').innerHTML,
+						zutaten: document.getElementById('zutaten').innerHTML
+						});
 
-																								function(){
-																									console.log("Nachricht wurde versendet.");
-																								},
+						publication.then(
 
-																								function(){
-																									console.log("Fehler!" );
-																								}
+						function(){
+							console.log("Nachricht wurde versendet.");
+						},
 
+						function(){
+							console.log("Fehler!" );
+						}
 
+						);
+			};
 
-																				);
+	client.disable('autodisconnect');
+	</script>
 
 
 
 
+<div class="well">
+	<div class="container">
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="input-group">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+						<input name="Author" type="text" class="form-control" placeholder="Author" id="name" value="<%=data.Author%>" readonly></input>
 
-																		};
+						</div>
+					</div>
 
-																			client.disable('autodisconnect');
-														</script>
+					<div class="col-xs-6">
+						<input name="Titel" type="text" class="form-control" placeholder="Titel" value="<%=data.Titel%>" id="titel" readonly></input>
+						<br>
+					</div>
 
+					<div class="col-xs-12">
+						<div class="form-group">
+						<textarea name="POST" class="form-control" rows=10 required id="message" readonly> <%=data.POST%> </textarea>
+						<input name="Zutaten" type="text" class="form-control" placeholder="Zutat" id="zutaten" value="<%=data.Zutaten%>" readonly>
 
+						<br>
+						<label for="publishPlace">Blogeintrag veröffentlichen in:</label>
+						<select id="publishPlace" style="float:right;" class="form-control">
+						<option value="/news">Neuigkeiten</option>
+						<option value="/receipts">Rezepte</option>
+						</select>
 
+						<button type="Button" class="btn btn-primary" style="float:right;margin-top:10px" id="submit" onClick="publish()"> Publish </button>
 
+						</div>
+					</div>
 
-
-
-
-
-																				<div class="container">
-																					<div class="jumbotron">
-
-																					<div class="row">
-																						<div class="col-xs-6">
-																							<div class="input-group">
-																									<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-																									<input name="Author" type="text" class="form-control" placeholder="Author" id="name" value="<%=data.Author%>" required></input>
-
-																							</div>
-																					</div>
-
-																					<div class="col-xs-6">
-																							<input name="Titel" type="text" class="form-control" placeholder="Titel" value="<%=data.Titel%>" id="titel" ></input>
-
-																							<br>
-																					</div>
-
-																					<div class="col-xs-12">
-																						<div class="form-group">
-																								<textarea name="POST" class="form-control" rows=10 required id="message" > <%=data.POST%> </textarea>
-																								<input name="Zutaten" type="text" class="form-control" placeholder="Zutat" id="zutaten" value="<%=data.Zutaten%>" required>
-
-																								<br>
-
-														<button type="Button" class="btn btn-primary" style="float: right" id="submit" onClick="doit()"> Publish </button>
-
-																						</div>
-																					</div>
-																					<hr>
-																					</div>
-																					</div>
-																				</div>
-
-
-
-
-
-
-
-
-
-
-
-									        </div>
-									    </main>
-
-									    <footer>
-
-												<p class="text-center text-muted">© Copyright 2015 Team Accu</p>
-									    </footer>
-
-									</body>
-									</html>
+					<hr>
+				</div>
+		
+	</div>
+</div>
