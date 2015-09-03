@@ -11,14 +11,14 @@ Datei "A1.js"
 ####Funktionen
 - jeder kann Rezept posten
 - jeder kann jedes Rezept kommentieren
-- ein Post kann mit samt Kommentaren gelöscht werden
+- ein Blogeintrag kann mit samt Keommentaren gelöscht werden
 - ein Kommentar kann gelöscht werden 
-- jeder kann Post mit den meisten Aufrufen anfragen
-- jeder kann den neusten Post anfragen
-- jeder kann Post mit den meisten Kommentaren anfragen
+- jeder kann Blogeintrag mit den meisten Aufrufen anfragen
+- jeder kann den neusten Blogeintrag anfragen
+- jeder kann Blogeintrag mit den meisten Kommentaren anfragen
    
 ####Anwendungslogik: 
-- Produktnamen können in Suchfunktion geschrieben werden. --> es werden alle Rezepte mit diesem Produktnamen ausgegeben.
+- Produktnamen können in die Suchfunktion geschrieben werden. --> es werden alle Rezepte mit diesem Produktnamen ausgegeben.
 - es wird gezählt, wie oft ein Rezept aufgerufen wurde
 - es wird gezählt, wie oft ein Rezept kommentiert wurde
 
@@ -73,3 +73,6 @@ Tanja Buschmann ist vor einigen Monaten Mutter geworden und ist in ständiger So
 ##### 3.
 Jan Hermens lebt seit einigen Jahren vollkommen vegan. In einem Skandal in den Nachrichten wurde bekannt gegeben, dass eine Marke, der Jan vertraut hat, dass sie alles vegan herstellen, Tierversuche macht. Dies war ein großer Schock für ihn, da er die Produkte der Marke für viel Geld erworben hat, um zuversichtlich vegan leben zu können. Nach diesem Schock ist Jan der Meinung er könne bezüglich Kosmetik- bzw Hygieneartikel niemandem mehr vertrauen. Er beschließt sich diese Produkte eigenhändig herzustellen, denn nur so kann er mit Sicherheit sagen, ob etwas wirklich zu 100% vegan ist. 
 Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefällt die Seite "Accuratus", da er sehen kann, wie oft ein Rezept aufgerufen wurde. Dies hilft ihm weiter, da er nichts probieren möchte, was nicht schon andere einmal probiert haben. Schnell merkt Jan, dass es gar nicht so kompliziert ist, sich seine Produkte selbst herzustellen. Er versucht gelegentlich einige Rezepte zu erweitern und postet diese selber. Heute ist Jan einer der häufigsten Rezepte-Blogger der Seite Accuratus.
+
+
+
