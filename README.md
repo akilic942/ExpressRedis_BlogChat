@@ -74,5 +74,72 @@ Tanja Buschmann ist vor einigen Monaten Mutter geworden und ist in ständiger So
 Jan Hermens lebt seit einigen Jahren vollkommen vegan. In einem Skandal in den Nachrichten wurde bekannt gegeben, dass eine Marke, der Jan vertraut hat, dass sie alles vegan herstellen, Tierversuche macht. Dies war ein großer Schock für ihn, da er die Produkte der Marke für viel Geld erworben hat, um zuversichtlich vegan leben zu können. Nach diesem Schock ist Jan der Meinung er könne bezüglich Kosmetik- bzw Hygieneartikel niemandem mehr vertrauen. Er beschließt sich diese Produkte eigenhändig herzustellen, denn nur so kann er mit Sicherheit sagen, ob etwas wirklich zu 100% vegan ist. 
 Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefällt die Seite "Accuratus", da er sehen kann, wie oft ein Rezept aufgerufen wurde. Dies hilft ihm weiter, da er nichts probieren möchte, was nicht schon andere einmal probiert haben. Schnell merkt Jan, dass es gar nicht so kompliziert ist, sich seine Produkte selbst herzustellen. Er versucht gelegentlich einige Rezepte zu erweitern und postet diese selber. Heute ist Jan einer der häufigsten Rezepte-Blogger der Seite Accuratus.
 
+##1. Dokumentation des Service: 
+###1.1 Angabe der Ressourcen, der dafür vorhergesehenen http Verben und deren Semantik
+		Tabellen
+
+###1.2 Überlegungen, die angestellt wurden zur Definition der Ressourcen, Alternativen, die betrachtet wurden
+
+Zu Beginn des Projekts wurde überlegt, welche Funktionen der Blog beinhalten sollte und welche Ressourcen dafür gebraucht werden. Die gewünschten Funktionen sind:
+einen Blogeintrag erstellen
+einen Blogeintrag ändern und oder löschen 
+einen Blogeintrag kommentieren
+Kommentar zu dem Blogeintrag löschen können
+
+Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeitet werden kann, da diese Kommentare zu Diskussionen führen. Es ist nicht erwünscht, dass durch das nachträgliche Bearbeiten eines Kommentars der Sinn dieser Diskussion verfälscht und oder andere User kompromittiert werden. 
+
+Es wurden Überlegungen angestellt, wie man über die Redis-Datenbank Kommentare erstellen und sie nach ihrer Identifikationsnummer (ID) löschen kann. Die Problematik der Kommentare , hinsichtlich einer erstellten Liste, liegt darin, dass ein einzelner Beitrag dieser Liste schwer abzurufen ist. Aufgrund dessen ist eine Hashtabelle verwendet worden.  
+Kommentare werden über die Funktionen Sadd und Hset erstellt. Sadd ist eine Tabelle, die angibt, welche Kommentare sich mit welcher ID unter den Blogeinträgen befinden. Mithilfe von Hset wird der Kommentar erstellt und erhält einen HashKeyValue. Über diesen HashKeyValue können einzelne Kommentare gelöscht werden. Mit einer einfachen Redis-Liste, hätte dies nicht funktioniert, da nicht auf einen bestimmten Kommentar ohne ID zugegriffen werden kann.
+Jeder erstellte Blogeintrag bekommt eine ID, welche von der Redis-Datenbank mit der Funktion INCR id übergeben wird 
+
+
+###1.3 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
+Datenhaltung: Ein vollständiger Eintrag des Projekts ist in dem Jason-Format, welcher in der Redis-Datenbank gespeichert wird, wohingegen es hätte so geschrieben werden können, dass dieser Eintrag sukzessiv eingespeichert werden kann. Somit könnten alle Titel, alle Autoren und alle Zutaten separat gespeichert und anschließend zusammengesetzt werden. Diese Möglichkeit wurde aus den Überlegungen ausgeschlossen, da die Vorgehensweise wirkungslos komplex gewesen wäre. 
+Das Jason-Format bietet die Möglichkeit die Elemente des Eintrags über verschiedene Module einzeln abzurufen. Hierzu dient das EJS-Modul.
+Redis-Datenbank:
+
+
+Anwendungslogik des Service:
+Die Anwendungslogik des Services wurde über das Modul Express angefertigt, welches dem Nutzer ermöglicht, einen Blogeintrag oder einen Kommentar zu erstellen und zu löschen. Der Blogeintrag kann von dem Nutzer geändert werden, sofern er diesen selber verfasst hat. Im Gegensatz zum Blogeintrag, ist dies bei einem Kommentar nicht möglich.
+
+Außerdem bietet der Service eine Such-Funktion über den Query-Parameter  „search“. Es kann nach den Rezepttitel gesucht werden, indem man den Suchbegriff eingibt und die Datenbank nach diesem Begriff abgesucht wird. Dies geschieht über das Modul Reds (https://www.npmjs.com/package/reds) . 
+Mithilfe von Reds wird die Datenbank als Jason-Datei ausgegeben.
+Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Jason-Objekte mit gesucht werden. Wenn ein Nutzer den Begriff „Autor“ eingäbe, bekäme er alle Blogeinträge zurück, das jeder Blogeintrag den Namen des Jason-Objekts „Autor“ beinhaltet.
+Ein möglicher Lösungsvorschlag für diese Problematik wäre, die Blogeinträge aufzuteilen, sodass die Jason-Objekte einzeln gespeichert werden würden.
+
+####1.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
+Bei dem Rest-Client: 
+Dadurch, dass die Grundidee mit ihren Funktionen nur einen Blog mit Kommentaren umfasst, ist die gebrauchte Funktionalität klarstrukturiert gewesen.
+Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel nicht eingebunden werden. Sie hätte angezeigt, welcher Blogbeitrag am meisten kommentiert wurde.
+
+
+##2. Dokumentation des Dienstnutzers
+###2.1 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
+Die Anwendungslogik des Dienstnutzers besteht darin, dass Faye verwendet wird, um Push-Nachrichten zu senden und ein Chat-System zu haben. Die Überlegungen hierbei sind gewesen, einen interaktiven Blog zu erstellen. Für diesen Blog hat sich das Faye-Modul gut geeignet.
+Des Weiteren wurde für die Datenhaltung das Faye-Redis-Modul verwendet, welches mit dem Redis-Server kommuniziert.
+Faye(https://www.npmjs.com/package/faye) nutzt das Faye-Redis-Modul, um Status und Routing-Nachrichten zu speichern. Faye-Redis ist die Engine, die mit dem Redis-Server kommuniziert. 
+
+
+###2.2 Umsetzung der Präsentationslogik und Überlegungen dazu
+
+Die Präsentationslogik basiert auf  das Modul EJS. (schreiben was EJS ist —> Video 3) 
+EJS sind Templates, das sind halt Codes die man immer und immer wieder schreibt. Man kann das halt ersetzen. ( Video 3 nochmal ansehen und das ergänzen)
+Zusätzlich zu dem EJS-Modul wird das Modul EJS-Mate verwendet, wodurch ein Layout definiert werden kann, welches wiederholt verwendet wird.
+Das freizugängliche Bootstrap CSS wir verwendet.
+
+
+
+
+###2.3 Beschreibung der asynchron implementierten Teile der Nutzungsschnittstelle und Begründungen dazu
+Asynchrone Implemetationen des Projekts sind zum einen das Express Modul und zum anderen die Kommunikation mit dem Redis-Server. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, Blockeinträge zu lesen, Blockeinträge zu kommentieren und zu publischen/subscriben.
+(sind die ganzen Module) 
+Dies ist die Nutzungsschnittstelle.
+Der Grund für die Verwendung des Express Modul ist die Asynchronität.
+
+
+###2.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
+Zu Beginn existierte die Idee, über Tags oder über Zutaten Rezepte zusammenstellen zu können.
+Die Suchfunktion, welche es ermöglicht hätte nach Zutaten zu suchen und ein Rezept zu diesen angegeben zu bekommen, wurde aus zeittechnischen Gründen nicht geschrieben. Diese Art der Suche ist zu komplex gewesen.
+Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten sollte, Blogeinträge als Favoriten zu markieren. Um dies realisieren zu können, wäre eine Anmeldungs-Funktion notwendig gewesen, welche aus zeittechnischen Gründen nicht umgesetzt werden konnte. Aus diesem Grund ist das Projekt aus der Admin-Perspektive, ohne jegliche Aufteilung oder Restriktionen für jeden Nutzer.
 
 
