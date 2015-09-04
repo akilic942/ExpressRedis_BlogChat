@@ -76,8 +76,24 @@ Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefä
 
 ##1. Dokumentation des Service: 
 ###1.1 Angabe der Ressourcen, der dafür vorhergesehenen http Verben und deren Semantik
-		Tabellen
 
+####Restspezifikationen
+| Ressource              | Methode | Semantik                                                                             | Content-Type (req) | Content-Type (res) |
+|------------------------|---------|--------------------------------------------------------------------------------------|--------------------|--------------------|
+| /post                | post    | Posten eines Posts mit ID                                                    |            application/json        |      application/json           |
+| /post/:postid              | get     | Anfragen eines Posts nach ID                                 |       application/json             |          application/json          |
+| /post/:postid              | put     | Ändern eines Posts                                    |      application/json              |     application/json             |
+| /post/:postid              | delete  | Löschen eines Posts mit ihren Kommentaren                                                         |                 |               |
+| /top                 | get     | Anfrage des Posts mit den meisten Anfragen                              |      application/json              |            application/json        |
+| /mostrecent | get    | Anfrage des jüngsten( bzw des neusten) Posts                          |        application/json            |         application/json           |
+| /post/:postid/comment/ | post     | Posten eines Kommentares zum jeweiligen Post. Ermöglicht Löschen und Abrufen nach ID  |        application/json            |         application/json           |
+| /post/:id/comment/ | get     | Anfragen aller Kommentare zum Post |       application/json             |      application/json              |
+| /post/:pid/comment/:cid | delete  | Löschen eines Kommentares                                      |              |                |
+| /topcommented    | get     |      Anfrage des Posts mit den meisten Kommentaren                                                                               |       application/json             |        application/json            |
+| /     | get     |        SUCH-Funktion                                                                              |        tapplication/json            |        application/json            |
+
+   
+   
 ###1.2 Überlegungen, die angestellt wurden zur Definition der Ressourcen, Alternativen, die betrachtet wurden
 
 Zu Beginn des Projekts wurde überlegt, welche Funktionen der Blog beinhalten sollte und welche Ressourcen dafür gebraucht werden. Die gewünschten Funktionen sind:
