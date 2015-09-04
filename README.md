@@ -130,7 +130,7 @@ Das freizugängliche Bootstrap CSS wir verwendet.
 
 
 ###2.3 Beschreibung der asynchron implementierten Teile der Nutzungsschnittstelle und Begründungen dazu
-Asynchrone Implemetationen des Projekts sind zum einen das Express Modul und zum anderen die Kommunikation mit dem Redis-Server. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, Blockeinträge zu lesen, Blockeinträge zu kommentieren und zu publischen/subscriben.
+Asynchrone Implemetationen des Projekts sind zum einen das Express Modul und zum anderen die Kommunikation mit dem Redis-Server. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, Blockeinträge zu lesen, Blockeinträge zu kommentieren und zu publishen/subscriben.
 (sind die ganzen Module) 
 Dies ist die Nutzungsschnittstelle.
 Der Grund für die Verwendung des Express Modul ist die Asynchronität.
