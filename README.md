@@ -40,26 +40,7 @@ Maria S. (32) macht es Spaß ihre Produkte selbst herzustellen. Sie benutzt für
 #####Szenario4 Admins
 Mia M. (22) ist eine der drei Admins von „Accuratus“. Ihre Aufgabe besteht darin, die geposteten Rezepte auszuprobieren und zu bewerten. Wenn die vorgegeben Produkte ihren Zweck erfüllen, versieht Mia diese mit einem grünen Häkchen, sodass die Besucher der Website stets wissen, welchen Rezepten sie vertrauen können.
 
-      
-####Ressourcen-Tabelle 
 
-
-| Ressource              | Methode | Semantik                                                                             | Content-Type (req) | Content-Type (res) |
-|------------------------|---------|--------------------------------------------------------------------------------------|--------------------|--------------------|
-| /post                | post    | Posten eines Posts mit ID                                                    |            application/json        |        text/plain            |
-| /post/:postid              | get     | Anfragen eines Posts nach ID                                 |       application/json             |          application/json          |
-| /post/:postid              | put     | Ändern eines Posts                                    |      application/json              |      text/plain              |
-| /post/:postid              | delete  | Löschen eines Posts mit ihren Kommentaren                                                         |          application/json          |     application/json               |
-| /top                 | get     | Anfrage des Posts mit den meisten Anfragen                              |      application/json              |            application/json        |
-| /mostrecent | get    | Anfrage des jüngsten( bzw des neusten) Posts                          |        application/json            |         application/json           |
-| /post/:postid/comment/ | post     | Posten eines Kommentares zum jeweiligen Post. Ermöglicht Löschen und Abrufen nach ID  |        text/plain            |         application/json           |
-| /post/:id/comment/ | get     | Anfragen aller Kommentare zum Post |       application/json             |      application/json              |
-| /post/:pid/comment/:cid | delete  | Löschen eines Kommentares                                      |       application/json             |         application/json           |
-| /topcommented    | get     |      Anfrage des Posts mit den meisten Kommentaren                                                                               |       application/json             |        application/json            |
-| /     | get     |        SUCH-Funktion                                                                              |        text/plain            |        application/json            |
-
-
-      
 #### Use Cases
 
 ##### 1.
@@ -91,9 +72,11 @@ Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefä
 | /post/:pid/comment/:cid | delete  | Löschen eines Kommentares                                      |              |                |
 | /topcommented    | get     |      Anfrage des Posts mit den meisten Kommentaren                                                                               |       application/json             |        application/json            |
 | /     | get     |        SUCH-Funktion                                                                              |        tapplication/json            |        application/json            |
+   
+      
+####andere Tabelle
 
-   
-   
+
 ###1.2 Überlegungen, die angestellt wurden zur Definition der Ressourcen, Alternativen, die betrachtet wurden
 
 Zu Beginn des Projekts wurde überlegt, welche Funktionen der Blog beinhalten sollte und welche Ressourcen dafür gebraucht werden. Die gewünschten Funktionen sind:
