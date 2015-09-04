@@ -1,7 +1,5 @@
 <% layout('layout') -%>
 
-
-
 	<script type="text/javascript" src="http://localhost:3001/faye/client.js"> </script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>
@@ -11,10 +9,11 @@
 				var x = document.getElementById("publishPlace").selectedIndex;
 
 				var publication = client.publish( document.getElementsByTagName("option")[x].value, {
-						author: document.getElementById('name').innerHTML,
-						titel: document.getElementById('titel').innerHTML,
-						post: document.getElementById('message').innerHTML,
-						zutaten: document.getElementById('zutaten').innerHTML
+						author: $('#name').attr('value'),
+						titel: $('#titel').attr('value'),
+						post: $('#message').innerHTML,
+						zutaten: $('#zutaten').attr('value'),
+						blogid: $('#blogid').innerHTML
 						});
 
 						publication.then(
@@ -23,7 +22,7 @@
 							console.log("Nachricht wurde versendet.");
 						},
 
-						function(){
+						function(err){
 							console.log("Fehler!" );
 						}
 
@@ -38,12 +37,13 @@
 
 <div class="well">
 	<div class="container">
+				Blogeintrag No. <p id=blogid><%=data.id%></p>
 				<div class="row">
+
 					<div class="col-xs-6">
 						<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
 						<input name="Author" type="text" class="form-control" placeholder="Author" id="name" value="<%=data.Author%>" readonly></input>
-
 						</div>
 					</div>
 
@@ -58,19 +58,19 @@
 						<input name="Zutaten" type="text" class="form-control" placeholder="Zutat" id="zutaten" value="<%=data.Zutaten%>" readonly>
 
 						<br>
-						<label for="publishPlace">Blogeintrag veröffentlichen in:</label>
+						<label for="publishPlace">Blogeintrag  veröffentlichen in:</label>
 						<select id="publishPlace" style="float:right;" class="form-control">
 						<option value="/news">Neuigkeiten</option>
-						<option value="/receipts">Rezepte</option>
+						<option value="/recipes">Rezepte</option>
 						</select>
-
 						<button type="Button" class="btn btn-primary" style="float:right;margin-top:10px" id="submit" onClick="publish()"> Publish </button>
+
 
 						</div>
 					</div>
 
 					<hr>
 				</div>
-		
+
 	</div>
 </div>

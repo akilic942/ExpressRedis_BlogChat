@@ -13,10 +13,25 @@
         <ul class="nav navbar-nav">
             <li><a href="/top">Toplist</a></li>
         <li><a href="/admin/newentry">Neuer Blogeintrag</a></li>
+
+        <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subscriptions<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/sub/news">Neuigkeiten</a></li>
+                    <li><a href="/sub/recipes">Rezepte</a></li>
+                  </ul>
+                </li>
+              </ul>
+
+
+
+
+
         </ul>
 
-        <form id="searchbar" method="get" action="/">
 
+        <form id="searchbar" method="get" action="/">
           <div class="col-md-6" style="margin-top:5px;float:right;margin-right:5px">
                   <div class="input-group col-md-8">
                       <span class="input-group-btn">
@@ -27,8 +42,6 @@
                       </span>
                   </div>
               </div>
-
-
             </form>
 
     </div>

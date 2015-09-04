@@ -1,6 +1,9 @@
-<% layout('layout') -%>
+  <% layout('layout') -%>
 <% if (!data.response) { %>
+
       <% data.forEach(function(obj) { %>
+        <% if (obj !== null) { %>
+
         <div class="well">
           <ul>
             <div class="page-header">
@@ -20,5 +23,6 @@
                 </ul>
             </div>
 
+            <% }; %>
       <% }); %>
 <% } %>

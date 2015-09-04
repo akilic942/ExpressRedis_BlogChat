@@ -1,4 +1,3 @@
-
 //Module
 var faye = require('faye'), fayeRedis = require('faye-redis');
 var ejs = require('ejs');
@@ -9,14 +8,11 @@ var express = require('express'), helpers = require('express-helpers')(app);
 var fs = require('fs');
 var bodyParser = require('body-parser');
 
-
-
 //Modul Referenzen
 var db = redis.createClient();
 var app = express();
 var server = http.createServer(app);
 var client = new faye.Client("http://localhost:3001/faye");
-
 
 var bayeux = new faye.NodeAdapter({
   mount: '/faye',
@@ -131,7 +127,7 @@ app.get('/top', bodyParser.json(), function(req, res){
         var data = JSON.parse(chunk);
 
 
-
+        console.dir(data);
         res.render('index', {
         data:data
         });
@@ -367,9 +363,6 @@ externalRequest.end();
 });
 
 
-
-
-
 app.post('/blog/:id/comments', function(req,res){
   var blogid = req.params.id;
     console.log(req.body);
@@ -514,17 +507,31 @@ app.get('/sub/news', bodyParser.json(), function(req,res){
 
 });
 
+app.get('/sub/recipes', bodyParser.json(), function(req,res){
+
+    res.render('sub/recipes');
+
+});
+
+app.get('/chat', function(req, res, next){
+
+  if (req.query.user === undefined){
+    res.redirect('/');
+  }
 
 
+  else {
 
+    res.render('chat',{
+      chatroom: req.query.user
+    });
 
+    }
 
-
-
-
-
+});
 
 // Server
+
 
 server.listen(3001, function(){
   console.log("(~˘▾˘)~ Der ServiceAgent wurde Erfolgreich gestartet (localhost:3001) ~(˘▾˘~)");

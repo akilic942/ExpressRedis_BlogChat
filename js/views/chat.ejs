@@ -1,10 +1,75 @@
-<div class="chat_container">
-  <div id="chat_room">
-    <p class="alert"> Welcome to the chat room <%= session[:username] %>! </p>
+<% layout('layout') -%>
+
+<script type='text/javascript' src='http://localhost:3001/faye/client.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script>
+$( document ).ready(function() {
+  var client = new Faye.Client("http://localhost:3001/faye");
+  var chatroom = document.getElementById('chatroom').innerHTML;
+
+  var subscription = client.subscribe('/'+chatroom, function(message){
+    $('#chat').val($('#chat').val() + 'more text');
+
+
+    });
+
+
+    $('#submit').click(function(){
+  console.log('chatroom');
+      var publication = client.publish('/'+chatroom, {
+            user: document.getElementById('name').value,
+            msg: document.getElementById('message').value
+            });
+
+            publication.then(
+
+                function(){
+                  console.log("Nachricht wurde versendet.");
+                },
+
+                function(err){
+                  console.log(err );
+                }
+
+            );
+    });
+
+
+client.disable('autodisconnect');
+});
+
+
+</script>
+
+
+<div class="container">
+  <div class="jumbotron">
+
+  <div class="row">
+    Chatraum von <p id=chatroom><%= chatroom %></p>
+
+  <div class="col-xs-12">
+    <textarea name="POST" class="form-control" rows=10 required id="chat" disabled></textarea>
   </div>
 
-  <form id="new_message_form">
-    <input type="text" id="message" name="message">
-    <input type="submit" value="Send">
-  </form>
+  <form id= "chatform" name= "chat">
+    <div class="col-xs-3">
+      <div class="input-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+          <input name="name" type="text" class="form-control" placeholder="Username" id="name" required>
+      </div>
+    </div>
+
+
+  <div class="col-xs-8" style="margin-left:-20px">
+      <input name="Titel" type="text" class="form-control" placeholder="Nachricht" id="message" required>
+      <br>
+  </div>
+  <button type="Button" class="btn btn-primary" style="float:right;margin-top:10px" id="submit" > Publish </button>
+
+</form>
+
+</div>
+</div>
 </div>
