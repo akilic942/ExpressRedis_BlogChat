@@ -121,7 +121,7 @@ Faye(https://www.npmjs.com/package/faye) nutzt das Faye-Redis-Modul, um Status u
 
 ###2.2 Umsetzung der Präsentationslogik und Überlegungen dazu
 
-Die Präsentationslogik basiert auf  dem Modul EJS. (schreiben was EJS ist —> Video 3) 
+Die Präsentationslogik basiert auf  dem Modul EJS. Das EJS Modul ist ein Template Enginge basierend auf JavaScript. Es generiert einen HTML-String aus Templates und Daten, sodass der Code kalkulierbarer und dienlicher ist (https://www.npmjs.com/package/ejs).
 Zusätzlich zu dem EJS-Modul wird das Modul EJS-Mate verwendet, wodurch ein Layout definiert werden kann, welches wiederholt verwendet wird.
 Das freizugängliche Bootstrap CSS wir verwendet.
 
