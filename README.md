@@ -57,7 +57,7 @@ Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefä
 
 ##1. Dokumentation des Service: 
 
-Um das Produkt zu starten verwendet man die index.js welche beide Server startet
+Um das Projekt zu starten, verwendet man die index.js, welche beide Server startet:
 ```
 npm install (einmalig)
 node index.js
@@ -66,7 +66,7 @@ node index.js
 
 ###1.1 Angabe der Ressourcen, der dafür vorhergesehenen http Verben und deren Semantik
 
-####Restspezifikationen
+####REST-Spezifikationen
 | Ressource              | Methode | Semantik                                                                             | Content-Type (req) | Content-Type (res) |
 |------------------------|---------|--------------------------------------------------------------------------------------|--------------------|--------------------|
 | /post                | post    | Posten eines Posts mit ID                                                    |            application/json        |      application/json           |
@@ -111,14 +111,14 @@ Außerdem bietet der Service eine Such-Funktion über den Query-Parameter „sea
 Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit durchgesucht werden. Wenn ein Nutzer zB. den Begriff „Author“ eingäbe, bekäme er alle Blogeinträge zurück, da jeder Blogeintrag den Namen des Json-Objekts „Autor“ beinhaltet.
 Ein möglicher Lösungsvorschlag für diese Problematik wäre, die Blogeinträge aufzuteilen, sodass die Json-Objekte einzeln gespeichert werden würden.
 
-Der Rest-Client ist abrufbar über
+Der RESTClient ist abrufbar über
 ```
 localhost:3000
 ```
 
 ####1.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
 Dadurch, dass die Grundidee mit ihren Funktionen nur einen Blog mit Kommentaren umfasst, ist die gebrauchte Funktionalität klarstrukturiert gewesen.
-Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel nicht in den Dienstnutzer eingebunden werden. Sie hätte angezeigt, welcher Blogbeitrag am meisten kommentiert wurde.
+Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel nicht in den Dienstleister eingebunden werden. Sie hätte angezeigt, welcher Blogbeitrag am meisten kommentiert wurde.
 
 
 ##2. Dokumentation des Dienstnutzers
@@ -131,25 +131,29 @@ Darüber hinaus wird das Modul Faye-Redis verwendet, um Status und Routing-Nachr
 ###2.2 Umsetzung der Präsentationslogik und Überlegungen dazu
 Die Präsentationslogik basiert auf  dem Modul EJS. Das EJS Modul ist ein Template Engine basierend auf JavaScript. Es generiert einen HTML-String aus Templates und Daten, sodass der Code kalkulierbarer und dienlicher ist (https://www.npmjs.com/package/ejs).
 Zusätzlich zu dem EJS-Modul wird das Modul EJS-Mate verwendet, wodurch ein Layout definiert werden kann, welches wiederholt verwendet wird.
-Das freizugängliche Bootstrap CSS wir verwendet um ein einfaches responsive Design zu ermöglichen.
-Um den Dienstnutzer im Browser abzurufen
+Das freizugängliche Bootstrap CSS wir verwendet, um ein einfaches responsive Design zu ermöglichen.
+
+Um den Dienstnutzer im Browser abzurufen:
 ```
 localhost:3001
 ```
 
 
-
-
 ###2.3 Beschreibung der asynchron implementierten Teile der Nutzungsschnittstelle und Begründungen dazu
-Asynchrone Implemetationen des Projekts sind zum einen das Express Modul und zum anderen die Kommunikation mit dem Redis-Server. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, Blockeinträge zu lesen, Blockeinträge zu kommentieren und zu publischen/subscriben.
-(sind die ganzen Module) 
-Dies ist die Nutzungsschnittstelle.
-Der Grund für die Verwendung des Express Modul ist die Asynchronität.
+Asynchrone Implemetationen des Projekts sind zum einen das Express, das Redis und das Faye Modul. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, zu lesen, zu kommentieren und zu publischen/subscriben.
 
 
 ###2.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
 Zu Beginn existierte die Idee, über Tags oder über Zutaten Rezepte zusammenstellen zu können.
 Die Suchfunktion, welche es ermöglicht hätte nach Zutaten zu suchen und ein Rezept zu diesen angegeben zu bekommen, wurde aus zeittechnischen Gründen nicht geschrieben. Diese Art der Suche ist zu komplex gewesen.
-Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten sollte, Blogeinträge als Favoriten zu markieren. Um dies realisieren zu können, wäre eine Anmeldungs-Funktion notwendig gewesen, welche aus zeittechnischen Gründen nicht umgesetzt werden konnte. Aus diesem Grund ist das Projekt aus der Admin-Perspektive, ohne jegliche Aufteilung oder Restriktionen für jeden Nutzer.
+Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten sollte, Blogeinträge als Favoriten zu markieren. Um diese  Funktion sinnvoll einzubauen, wäre es erforderlich gewesen eine Anmeldungs- oder Session-Funktion, welche aus zeittechnischen Gründen nicht umgesetzt werden konnte. Aus diesem Grund ist das Projekt aus der Admin-Perspektive, ohne jegliche Aufteilung oder Restriktionen für jeden Nutzer.
 
+
+##3 Dokumentation des Prozesses
+###3.1 Beschreibung der Vorgehensweise und der Irrwege
+####Vorgehensweise
+Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wäre und welche Ressourcen für diesen gebraucht werden könnten. Vorerst wurde nur an dem RESTClient gearbeitet,ohne Überlegungen an den Dienstnutzer/Dienstleister anzustellen und ohne eine Ressourcentabelle vorzufertigen, die es ermöglicht hätte strukturierter vorzugehen. So kam es zu eiem Fehler im Richardson-Maturity-Model Level 2, in unseren RESTClient, und zwar, dass bei einem GET-Aufruf ein Counter die Zugriffe mitgezählt hat. Dies kam zustande, da in Erfahrung gebracht werden wollte, welcher Blogeintrag am meisten abgerufen worden ist. Der Fehler wurde erst mit der Bearbeitung des Dienstleisters behoben. Während der Bearbeitung des Dienstnutzers, hat der Fokus in erster Linie der Präsentationslogik gegolten. An der Anwendungslogik wurde erst gearbeitet, nachdem die standardmäßigen Blogfunktionen gegeben waren.Die Ressourcen und der Dienstleister wurden fließend während der Bearbeitung der Präsentationslogik verändert. Schließlich führte dies zur Integrierung des Moduls Faye.
+
+####Fazit
+Grundsätzlich konnten alle vorüberlegten Funktionen erzielt werden, jedoch wurde erst mit dem Arbeiten am Projekt bewusst, wo die Implementierungs-Grenzen liegen. Ein strukturierteres Arbeiten, inbesondere der Vorüberlegungen zB. anhand von Ressourcen-Tabellen hätte Arbeitsschritte und Fehler erspart.
 
