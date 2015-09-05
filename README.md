@@ -80,9 +80,6 @@ node index.js
 | /post/:pid/comment/:cid | delete  | Löschen eines Kommentares                                      |              |                |
 | /topcommented    | get     |      Anfrage des Posts mit den meisten Kommentaren                                                                               |       application/json             |        application/json            |
 | /?search=SUCHBEGRIFF     | get     |        SUCH-Funktion(?search=SUCHBEGRIFF)                                                                              |        application/json            |        application/json            |
-   
-      
-####andere Tabelle
 
 
 ###1.2 Überlegungen, die angestellt wurden zur Definition der Ressourcen, Alternativen, die betrachtet wurden
@@ -157,3 +154,11 @@ Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wär
 ####Fazit
 Grundsätzlich konnten alle vorüberlegten Funktionen erzielt werden, jedoch wurde erst mit dem Arbeiten am Projekt bewusst, wo die Implementierungs-Grenzen liegen. Ein strukturierteres Arbeiten, inbesondere der Vorüberlegungen zB. anhand von Ressourcen-Tabellen hätte Arbeitsschritte und Fehler erspart.
 
+##Arbeitsmatrix
+####REST-Spezifikationen
+| Kategorie | Aziz Kilic | Aylin Mengi | Meryem Dural |
+|-----------|------------|-------------|--------------|
+| Code   | 50%  | 25% | 25% |
+| Dokumentation | 50% | 25% | 25% |
+
+   
