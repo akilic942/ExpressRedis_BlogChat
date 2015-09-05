@@ -56,6 +56,14 @@ Jan Hermens lebt seit einigen Jahren vollkommen vegan. In einem Skandal in den N
 Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefällt die Seite "Accuratus", da er sehen kann, wie oft ein Rezept aufgerufen wurde. Dies hilft ihm weiter, da er nichts probieren möchte, was nicht schon andere einmal probiert haben. Schnell merkt Jan, dass es gar nicht so kompliziert ist, sich seine Produkte selbst herzustellen. Er versucht gelegentlich einige Rezepte zu erweitern und postet diese selber. Heute ist Jan einer der häufigsten Rezepte-Blogger der Seite Accuratus.
 
 ##1. Dokumentation des Service: 
+
+Um das Produkt zu starten verwendet man die index.js welche beide Server startet
+```
+npm install (einmalig)
+node index.js
+```
+
+
 ###1.1 Angabe der Ressourcen, der dafür vorhergesehenen http Verben und deren Semantik
 
 ####Restspezifikationen
@@ -71,7 +79,7 @@ Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefä
 | /post/:id/comment/ | get     | Anfragen aller Kommentare zum Post |       application/json             |      application/json              |
 | /post/:pid/comment/:cid | delete  | Löschen eines Kommentares                                      |              |                |
 | /topcommented    | get     |      Anfrage des Posts mit den meisten Kommentaren                                                                               |       application/json             |        application/json            |
-| /     | get     |        SUCH-Funktion                                                                              |        application/json            |        application/json            |
+| /?search=SUCHBEGRIFF     | get     |        SUCH-Funktion(?search=SUCHBEGRIFF)                                                                              |        application/json            |        application/json            |
    
       
 ####andere Tabelle
@@ -85,45 +93,49 @@ Zu Beginn des Projekts wurde überlegt, welche Funktionen der Blog beinhalten so
 - einen Blogeintrag kommentieren
 - Kommentar zu dem Blogeintrag löschen können
 
-Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeitet werden kann, da diese Kommentare zu Diskussionen führen. Es ist nicht erwünscht, dass durch das nachträgliche Bearbeiten eines Kommentars der Sinn dieser Diskussion verfälscht und oder andere User kompromittiert werden. 
-
-Es wurden Überlegungen angestellt, wie man über die Redis-Datenbank Kommentare erstellen und sie nach ihrer Identifikationsnummer (ID) löschen kann. Die Problematik der Kommentare, hinsichtlich einer erstellten Liste, liegt darin, dass ein einzelner Beitrag dieser Liste schwer abzurufen ist. Aufgrund dessen ist eine Hashtabelle verwendet worden.  
-Kommentare werden über die Funktionen Sadd und Hset erstellt. Sadd ist eine Tabelle, die angibt, welche Kommentare sich mit welcher ID unter den Blogeinträgen befinden. Mithilfe von Hset wird der Kommentar erstellt und erhält einen HashKeyValue. Über diesen HashKeyValue können einzelne Kommentare gelöscht werden. Mit einer einfachen Redis-Liste, hätte dies nicht funktioniert, da nicht auf einen bestimmten Kommentar ohne ID zugegriffen werden kann.
-Jeder erstellte Blogeintrag bekommt eine ID, welche von der Redis-Datenbank mit der Funktion INCR id übergeben wird. 
+Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeitet werden kann, da die Kommentarfunktion zu Diskussionen führen. Es ist nicht erwünscht, dass durch das nachträgliche Bearbeiten eines Kommentars der Sinn dieser Diskussion verfälscht und oder andere User kompromittiert werden. 
 
 
 ###1.3 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
-Datenhaltung: Ein vollständiger Eintrag des Projekts ist in dem Json-Format, welcher in der Redis-Datenbank gespeichert wird, wohingegen es hätte so geschrieben werden können, dass dieser Eintrag sukzessiv eingespeichert werden kann. Somit könnten alle Titel, alle Autoren und alle Zutaten separat gespeichert und anschließend zusammengesetzt werden. Diese Möglichkeit wurde aus den Überlegungen ausgeschlossen, da die Vorgehensweise wirkungslos komplex gewesen wäre. 
-Das Json-Format bietet die Möglichkeit die Elemente des Eintrags über verschiedene Module einzeln abzurufen. Hierzu dient das EJS-Modul.
-Redis-Datenbank:(fehlt noch)
+Datenhaltung: Ein Eintrag wird in einem einzelnen Json-Format in der Redis-Datenbank gespeichert, wohingegen es hätte so geschrieben werden können, dass dieser Eintrag sukzessiv eingespeichert werden kann. Somit könnten Titel, Autoren, Zutaten und Inhalt separat gespeichert und anschließend zusammengesetzt werden. Diese Möglichkeit wurde aus den Überlegungen ausgeschlossen, da die Vorgehensweise wirkungslos komplex gewesen wäre. 
+Das Json-Format ermöglicht es einzelne Objekte des Json-Eintrags über verschiedene Module(zB. Express-partial-response) 
 
+Es wurden Überlegungen angestellt, wie über die Redis-Datenbank Kommentare zu erstellen und sie nach ihrer Identifikationsnummer (ID) zu löschen sind. Die Problematik der Kommentare, hinsichtlich einer erstellten Liste, liegt darin, dass ein einzelner Beitrag dieser Liste schwer abzurufen ist. Aufgrund dessen ist eine Hashtabelle verwendet worden.  
+Kommentare werden über die Funktionen Sadd und Hset erstellt. Sadd ist eine Tabelle, die angibt, welche Kommentare sich mit welcher ID unter den Blogeinträgen befinden. Mithilfe von Hset wird der Kommentar erstellt und erhält einen HashKeyValue. Über diesen HashKeyValue können einzelne Kommentare gelöscht werden. Mit einer einfachen Redis-Liste, hätte dies nicht funktioniert, da nicht auf einen bestimmten Kommentar ohne ID zugegriffen werden kann.
+Jeder erstellte Blogeintrag bekommt eine ID, welche von der Redis-Datenbank mit der Funktion INCR id übergeben wird. 
 
 Anwendungslogik des Service:
 Die Anwendungslogik des Services wurde über das Modul Express angefertigt, welches dem Nutzer ermöglicht, einen Blogeintrag oder einen Kommentar zu erstellen und zu löschen. Der Blogeintrag kann von dem Nutzer geändert werden, sofern er diesen selber verfasst hat. Im Gegensatz zum Blogeintrag, ist dies bei einem Kommentar nicht möglich.
 
-Außerdem bietet der Service eine Such-Funktion über den Query-Parameter „search“. Es kann nach den Rezepttitel gesucht werden, indem man den Suchbegriff eingibt und die Datenbank nach diesem Begriff abgesucht wird. Dies geschieht über das Modul Reds (https://www.npmjs.com/package/reds) . 
-Mithilfe von Reds wird die Datenbank als Json-Datei ausgegeben.
-Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit gesucht werden. Wenn ein Nutzer den Begriff „Autor“ eingäbe, bekäme er alle Blogeinträge zurück, das jeder Blogeintrag den Namen des Json-Objekts „Autor“ beinhaltet.
+Außerdem bietet der Service eine Such-Funktion über den Query-Parameter „search“. Es kann nach Blogeinträgen gesucht werden anhand des Titel, des Inhalts oder der Zutaten, indem man den Suchbegriff eingibt und die Datenbank nach diesem Begriff abgesucht wird. Dies geschieht über das Modul Reds (https://www.npmjs.com/package/reds). 
+Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit durchgesucht werden. Wenn ein Nutzer zB. den Begriff „Author“ eingäbe, bekäme er alle Blogeinträge zurück, da jeder Blogeintrag den Namen des Json-Objekts „Autor“ beinhaltet.
 Ein möglicher Lösungsvorschlag für diese Problematik wäre, die Blogeinträge aufzuteilen, sodass die Json-Objekte einzeln gespeichert werden würden.
 
+Der Rest-Client ist abrufbar über
+```
+localhost:3000
+```
+
 ####1.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
-Bei dem Rest-Client: 
 Dadurch, dass die Grundidee mit ihren Funktionen nur einen Blog mit Kommentaren umfasst, ist die gebrauchte Funktionalität klarstrukturiert gewesen.
-Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel nicht eingebunden werden. Sie hätte angezeigt, welcher Blogbeitrag am meisten kommentiert wurde.
+Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel nicht in den Dienstnutzer eingebunden werden. Sie hätte angezeigt, welcher Blogbeitrag am meisten kommentiert wurde.
 
 
 ##2. Dokumentation des Dienstnutzers
 ###2.1 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
-Die Anwendungslogik des Dienstnutzers besteht darin, dass Faye verwendet wird, um Push-Nachrichten zu senden und ein Chat-System zu haben. Die Überlegungen hierbei sind gewesen, einen interaktiven Blog zu erstellen. Für diesen Blog hat sich das Faye-Modul gut geeignet.
-Des Weiteren wurde für die Datenhaltung das Faye-Redis-Modul verwendet, welches mit dem Redis-Server kommuniziert.
-Faye(https://www.npmjs.com/package/faye) nutzt das Faye-Redis-Modul, um Status und Routing-Nachrichten zu speichern. Faye-Redis ist die Engine, die mit dem Redis-Server kommuniziert. 
+Die Anwendungslogik des Dienstnutzers besteht darin, dass Blogeinträge erstellt und bearbeitet und diese kommentiert werden können. Des Weiteren können einzelne Kommentare, sowie der gesamte Blogeintrag gelöscht werden.Zusätzlich besteht die Möglichkeit Nutzer, welche Neuigkeiten oder Rezepte abonniert haben, mit Push-Nachrichten über neue Blogeinträge zu informieren. Das verwendete Modul Faye(https://www.npmjs.com/package/faye) bietet dem Nutzer die Möglichkeit, den Autor eines Blogeintrags über einen öffentlichen Chat zu kontaktieren. Die Überlegungen hierbei sind gewesen, einen interaktiven Blog zu erstellen.
+Des Weiteren wurde für die Datenhaltung das Modul Faye-Redis als Engine verwendet, welches mit dem Redis-Server kommuniziert.
+Darüber hinaus wird das Modul Faye-Redis verwendet, um Status und Routing-Nachrichten zu speichern, die das Faye Modul mitsendet. 
 
 
 ###2.2 Umsetzung der Präsentationslogik und Überlegungen dazu
-
-Die Präsentationslogik basiert auf  dem Modul EJS. Das EJS Modul ist ein Template Enginge basierend auf JavaScript. Es generiert einen HTML-String aus Templates und Daten, sodass der Code kalkulierbarer und dienlicher ist (https://www.npmjs.com/package/ejs).
+Die Präsentationslogik basiert auf  dem Modul EJS. Das EJS Modul ist ein Template Engine basierend auf JavaScript. Es generiert einen HTML-String aus Templates und Daten, sodass der Code kalkulierbarer und dienlicher ist (https://www.npmjs.com/package/ejs).
 Zusätzlich zu dem EJS-Modul wird das Modul EJS-Mate verwendet, wodurch ein Layout definiert werden kann, welches wiederholt verwendet wird.
-Das freizugängliche Bootstrap CSS wir verwendet.
+Das freizugängliche Bootstrap CSS wir verwendet um ein einfaches responsive Design zu ermöglichen.
+Um den Dienstnutzer im Browser abzurufen
+```
+localhost:3001
+```
 
 
 
