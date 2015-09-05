@@ -13,10 +13,9 @@ $( document ).ready(function() {
 
 
   var subscription = client.subscribe('/'+chatroom, function(message){
-    $('#chat').val($('#chat').val()+ time +'['+ message.user +']' + message.msg +'\n');
+    $('#chat').val($('#chat').val()+ time +'['+ message.user +']: ' + message.msg +'\n');
     $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
-
 
     $('#submit').click(function(){
 
@@ -31,6 +30,7 @@ $( document ).ready(function() {
 
                 function(){
                   console.log("Nachricht wurde versendet.");
+                  $('#message').val('');
                 },
 
                 function(err){
@@ -40,6 +40,12 @@ $( document ).ready(function() {
             );
     });
 
+
+  $("#message").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#submit").click();
+        }
+  });
 
 client.disable('autodisconnect');
 });
@@ -54,7 +60,7 @@ client.disable('autodisconnect');
   <div class="row">
     Chatraum von <p id=chatroom><%= chatroom %></p>
 
-  <div class="col-xs-12">
+  <div class="well col-xs-12">
     <textarea name="POST" class="form-control" rows=10 required id="chat" disabled></textarea>
   </div>
 
@@ -71,7 +77,7 @@ client.disable('autodisconnect');
       <input name="Titel" type="text" class="form-control" placeholder="Nachricht" id="message" required>
       <br>
   </div>
-  <button type="Button" class="btn btn-primary" style="float:right;margin-top:10px" id="submit" > Publish </button>
+  <button type="Button" class="btn btn-primary" style="float:right;" id="submit" > Eingabe </button>
 
 </form>
 

@@ -11,7 +11,8 @@ $(document).ready(function(){
 			<ul>
 
 				<div class="page-header">
-				<a href="/admin/alterentry/<%=data.id%>" class="btn btn-default btn-xs" style="float:right"> Edit </a>
+				<a href="/chat?user=<%= data.Author %>" class="btn btn-default btn-success" style="float:right"> Chat </a>
+				<a href="/admin/alterentry/<%=data.id%>" class="btn btn-default btn-xs" style="float:right;margin-right:10px"><span class="glyphicon glyphicon-pencil"></span> Edit </a>
 
 					<h1><b><%= data.Titel %> </b><br>
 						<small>von <%= data.Author %>
