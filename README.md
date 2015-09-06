@@ -60,6 +60,16 @@ node index.js
 ```
 
 
+Der RESTClient ist abrufbar über
+```
+localhost:3000
+```
+
+Die Dienstnutzer-Seite ist abrufbar über
+```
+localhost:3001
+```
+
 ###1.1 Angabe der Ressourcen, der dafür vorhergesehenen http Verben und deren Semantik
 
 ####REST-Spezifikationen
@@ -128,7 +138,7 @@ Die Präsentationslogik basiert auf  dem Modul EJS. Das EJS Modul ist ein Templa
 Zusätzlich zu dem EJS-Modul wird das Modul EJS-Mate verwendet, wodurch ein Layout definiert werden kann, welches wiederholt verwendet wird.
 Das freizugängliche Bootstrap CSS wir verwendet, um ein einfaches responsive Design zu ermöglichen.
 
-Um den Dienstnutzer im Browser abzurufen:
+Um die Dienstnutzer-Seite im Browser abzurufen:
 ```
 localhost:3001
 ```
