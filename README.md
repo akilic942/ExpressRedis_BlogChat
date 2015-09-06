@@ -54,9 +54,8 @@ Nach einer kurzen Recherche im Internet stößt Jan auf zwei Websites. Ihm gefä
 
 ##1. Dokumentation des Service: 
 
-Um das Projekt zu starten, verwendet man die index.js, welche beide Server startet:
+Um das Projekt zu starten, verwendet man die index.js, welche beide Server startet. Vorerst müssen alle Module über npm install installiert werden
 ```
-npm install (einmalig)
 node index.js
 ```
 
