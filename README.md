@@ -16,7 +16,8 @@ WBA 2 SoSe15 Team 8 (Meryem Dural, Aylin Mengi, Aziz Kilic)
 ####Anwendungslogik: 
 - Produktnamen können in die Suchfunktion geschrieben werden. --> es werden alle Rezepte mit diesem Produktnamen ausgegeben.
 - es wird gezählt, wie oft ein Rezept aufgerufen wurde
-- es wird gezählt, wie oft ein Rezept kommentiert wurde
+- die Möglichkeit mit dem Autoren zu Kommunizieren über eine einfache Chatfunktion
+- die Möglichkeit Themen zu verfolgen um über neue Einträge informiert zu werden 
 
 ####Szenarien
     
