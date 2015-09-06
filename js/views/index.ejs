@@ -26,3 +26,11 @@
             <% }; %>
       <% }); %>
 <% } %>
+
+<% if (data.response) { %>
+  <div class="well">
+    <ul>
+      <div class="page-header">
+   <p>404:</p> <%=data.response%>
+      </div>
+  <% } %>

@@ -60,7 +60,7 @@ app.get('/post/:postid', function(req, res){
 
 		}
 		else {
-			res.status(404).type('text').send({response:'Diese Seite existert nicht. ¯_(ツ)_/¯'});
+			res.status(404).type('text').send({response:'Diese Seite existiert nicht. ¯_(ツ)_/¯'});
 		}
 	});
 });
@@ -278,7 +278,7 @@ app.get('/topcommented', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').write('Diese Seite existert nicht.');
+						res.status(404).type('text').write('Diese Seite existiert nicht.');
 					}
 
 					});
@@ -298,7 +298,7 @@ app.get('/topcommented', function(req, res){
 					}
 
 					else {
-						res.status(404).type('text').write('Diese Seite existert nicht.');
+						res.status(404).type('text').write('Diese Seite existiert nicht.');
 					}
 
 				});
@@ -316,13 +316,32 @@ app.get('/',function(req,res){
 
 	if(req.query.search !== undefined){
 	db.lrange('List:Posts',0,-1,function(err,rep){
-		if (err) res.status(404).type('text').send('Es existieren keine Posts.');
-		var list = rep; //map -> rep - JSON.parse //
+		if (err){res.status(404).type('text').send({response:'Diese Seite existiert nicht. ¯_(ツ)_/¯'});
+}		var list = rep; //map -> rep - JSON.parse //
+
+
+			if (rep === null) {
+				return res.status(404).type('text').send({response:'Es existieren keine Eintraege ¯_(ツ)_/¯'});
+			}
+
 
 		db.mget(list,function(err,rep){
-			var postindex = rep;
+
+			if (rep === undefined) {
+			return res.status(404).type('text').send({response:'Es existieren keine Eintraege ¯_(ツ)_/¯'});
+			}
+
+
 			console.dir(postindex);
-			postindex.map(function(){JSON.parse;});
+
+
+			var postindex = rep;
+			postindex.map(function(){
+				if(err){res.status(404).type('text').send({response:'Diese Seite existiert nicht. ¯_(ツ)_/¯'});}
+
+				JSON.parse;}
+
+			);
 			postindex.forEach(function(str, i){ search.index(str, i); });
 
 

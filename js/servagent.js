@@ -5,7 +5,6 @@ var engine = require('ejs-mate');
 var redis = require('redis');
 var http = require('http');
 var express = require('express'), helpers = require('express-helpers')(app);
-var fs = require('fs');
 var bodyParser = require('body-parser');
 
 //Modul Referenzen
