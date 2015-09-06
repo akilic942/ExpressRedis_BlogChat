@@ -60,7 +60,7 @@ node index.js
 ```
 
 
-Der RESTClient ist abrufbar über
+Der REST-Server ist abrufbar über
 ```
 localhost:3000
 ```
@@ -116,7 +116,7 @@ Außerdem bietet der Service eine Such-Funktion über den Query-Parameter „sea
 Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit durchgesucht werden. Wenn ein Nutzer zB. den Begriff „Author“ eingäbe, bekäme er alle Blogeinträge zurück, da jeder Blogeintrag den Namen des Json-Objekts „Author“ beinhaltet.
 Ein möglicher Lösungsvorschlag für diese Problematik wäre, die Blogeinträge aufzuteilen, sodass die Json-Objekte einzeln gespeichert werden würden.
 
-Der RESTClient ist abrufbar über
+Der REST-Server ist abrufbar über
 ```
 localhost:3000
 ```
@@ -157,7 +157,7 @@ Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten so
 ##3 Dokumentation des Prozesses
 ###3.1 Beschreibung der Vorgehensweise und der Irrwege
 ####Vorgehensweise
-Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wäre und welche Ressourcen für diesen gebraucht werden könnten. Vorerst wurde nur an dem RESTClient gearbeitet,ohne Überlegungen an den Dienstnutzer/Dienstleister anzustellen und ohne eine Ressourcentabelle vorzufertigen, die es ermöglicht hätte strukturierter vorzugehen. So kam es zu eiem Fehler im Richardson-Maturity-Model Level 2, in unseren RESTClient, und zwar, dass bei einem GET-Aufruf ein Counter die Zugriffe mitgezählt hat. Dies kam zustande, da in Erfahrung gebracht werden wollte, welcher Blogeintrag am meisten abgerufen worden ist. Der Fehler wurde erst mit der Bearbeitung des Dienstleisters behoben. Während der Bearbeitung des Dienstnutzers, hat der Fokus in erster Linie der Präsentationslogik gegolten. An der Anwendungslogik wurde erst gearbeitet, nachdem die standardmäßigen Blogfunktionen gegeben waren. Die Ressourcen und der Dienstleister wurden fließend während der Bearbeitung der Präsentationslogik verändert. Schließlich führte dies zur Integrierung des Moduls Faye.
+Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wäre und welche Ressourcen für diesen gebraucht werden könnten. Vorerst wurde nur an dem REST-Server gearbeitet,ohne Überlegungen an den Dienstnutzer/Dienstleister anzustellen und ohne eine Ressourcentabelle vorzufertigen, die es ermöglicht hätte strukturierter vorzugehen. So kam es zu eiem Fehler im Richardson-Maturity-Model Level 2, in unseren REST-Server, und zwar, dass bei einem GET-Aufruf ein Counter die Zugriffe mitgezählt hat. Dies kam zustande, da in Erfahrung gebracht werden wollte, welcher Blogeintrag am meisten abgerufen worden ist. Der Fehler wurde erst mit der Bearbeitung des Dienstleisters behoben. Während der Bearbeitung des Dienstnutzers, hat der Fokus in erster Linie der Präsentationslogik gegolten. An der Anwendungslogik wurde erst gearbeitet, nachdem die standardmäßigen Blogfunktionen gegeben waren. Die Ressourcen und der Dienstleister wurden fließend während der Bearbeitung der Präsentationslogik verändert. Schließlich führte dies zur Integrierung des Moduls Faye.
 
 ####Fazit
 Grundsätzlich konnten alle vorüberlegten Funktionen erzielt werden, jedoch wurde erst mit dem Arbeiten am Projekt bewusst, wo die Implementierungs-Grenzen liegen. Ein strukturierteres Arbeiten, inbesondere der Vorüberlegungen zB. anhand von Ressourcen-Tabellen hätte Arbeitsschritte und Fehler erspart.
