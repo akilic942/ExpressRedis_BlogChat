@@ -1,9 +1,6 @@
 # WBA2-SoSe15-T8
 WBA 2 SoSe15 Team 8 (Meryem Dural, Aylin Mengi, Aziz Kilic)
 
-##Aufgaben zum ersten Workshop
-Datei "A1.js"
-
 ##Exposé
    
 ###Accuratus
@@ -94,11 +91,13 @@ Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeit
 
 ###1.3 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
 Datenhaltung: Ein Eintrag wird in einem einzelnen Json-Format in der Redis-Datenbank gespeichert, wohingegen es hätte so geschrieben werden können, dass dieser Eintrag sukzessiv eingespeichert werden kann. Somit könnten Titel, Autoren, Zutaten und Inhalt separat gespeichert und anschließend zusammengesetzt werden. Diese Möglichkeit wurde aus den Überlegungen ausgeschlossen, da die Vorgehensweise wirkungslos komplex gewesen wäre. 
-Das Json-Format ermöglicht es einzelne Objekte des Json-Eintrags über verschiedene Module (zB. Express-partial-response) 
+Das Json-Format ermöglicht es einzelne Objekte des Json-Eintrags über verschiedene Module (zB. Express-partial-response) abzurufen.
 
 Es wurden Überlegungen angestellt, wie über die Redis-Datenbank Kommentare zu erstellen und sie nach ihrer Identifikationsnummer (ID) zu löschen sind. Die Problematik der Kommentare, hinsichtlich einer erstellten Liste, liegt darin, dass ein einzelner Beitrag dieser Liste schwer abzurufen ist. Aufgrund dessen ist eine Hashtabelle verwendet worden.  
 Kommentare werden über die Funktionen Sadd und Hset erstellt. Sadd ist eine Tabelle, die angibt, welche Kommentare sich mit welcher ID unter den Blogeinträgen befinden. Mithilfe von Hset wird der Kommentar erstellt und erhält einen HashKeyValue. Über diesen HashKeyValue können einzelne Kommentare gelöscht werden. Mit einer einfachen Redis-Liste, hätte dies nicht funktioniert, da nicht auf einen bestimmten Kommentar ohne ID zugegriffen werden kann.
-Jeder erstellte Blogeintrag bekommt eine ID, welche von der Redis-Datenbank mit der Funktion INCR id übergeben wird. 
+Jeder erstellte Blogeintrag bekommt eine ID, welche von der Redis-Datenbank mit der Funktion INCR übergeben wird. 
+
+Während der Erstellung der Ressourcen wurden Überlegungen angestellt, inwiefern die Ressource "mostrecent" rudimentär sei, da sie zwar eine eine eigene Funktion bildet, jedoch ähnliche Ergebnisse liefert und die Datenbank in gleicher weise nutzt wie das einfache abrufen eines Blogposts. So hätten Beispielsweise statt einer eigenen Ressource einen query-Parameter auf die Blog-Ressourcen anwenden können, um keine eigene Ressource für diese Funktionen bilden zu müssen oder aber es wäre möglich gewesen dies in den Dienstleister einzubauen. Ersteres wurde verworfen da der Code und somit auch die Ressource durch mehrere Query-Parameter zu komplex wurde. In den Dienstleister wurde diese Ressource nicht eingebaut, da der Dienstleister lösgelöst von der Datenbank und nur mit dem REST-Client kommunizieren sollte.
 
 Anwendungslogik des Service:
 Die Anwendungslogik des Services wurde über das Modul Express angefertigt, welches dem Nutzer ermöglicht, einen Blogeintrag oder einen Kommentar zu erstellen und zu löschen. Der Blogeintrag kann von dem Nutzer geändert werden, sofern er diesen selber verfasst hat. Im Gegensatz zum Blogeintrag, ist dies bei einem Kommentar nicht möglich.
