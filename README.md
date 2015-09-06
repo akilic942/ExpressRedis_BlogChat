@@ -57,7 +57,7 @@ node index.js
 ```
 
 
-Der REST-Server ist mittel Rest-Client oder Browser abrufbar über
+Der REST-Server ist mittels Rest-Client oder Browser abrufbar über
 ```
 localhost:3000
 ```
