@@ -142,7 +142,7 @@ Asynchrone Implemetationen des Projekts sind zum einen das Express, das Redis un
 ###2.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
 Zu Beginn existierte die Idee, über Tags oder über Zutaten Rezepte zusammenstellen zu können.
 Die Suchfunktion, welche es ermöglicht hätte nach Zutaten zu suchen und ein Rezept zu diesen angegeben zu bekommen, wurde aus zeittechnischen Gründen nicht geschrieben. Diese Art der Suche ist zu komplex gewesen.
-Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten sollte, Blogeinträge als Favoriten zu markieren. Um diese  Funktion sinnvoll einzubauen, wäre es erforderlich gewesen eine Anmeldungs- oder Session-Funktion, welche aus zeittechnischen Gründen nicht umgesetzt werden konnte. Aus diesem Grund ist das Projekt aus der Admin-Perspektive, ohne jegliche Aufteilung oder Restriktionen für jeden Nutzer.
+Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten sollte, Blogeinträge als Favoriten zu markieren. Um diese  Funktion sinnvoll einzubauen, wäre eine Anmeldungs- oder Session-Funktion erforderlich gewesen, welche aus zeittechnischen Gründen nicht umgesetzt werden konnte. Aus diesem Grund ist das Projekt aus der Admin-Perspektive, ohne jegliche Aufteilung oder Restriktionen für jeden Nutzer.
 
 
 ##3 Dokumentation des Prozesses
