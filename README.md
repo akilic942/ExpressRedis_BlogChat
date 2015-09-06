@@ -95,7 +95,7 @@ Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeit
 
 ###1.3 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
 Datenhaltung: Ein Eintrag wird in einem einzelnen Json-Format in der Redis-Datenbank gespeichert, wohingegen es hätte so geschrieben werden können, dass dieser Eintrag sukzessiv eingespeichert werden kann. Somit könnten Titel, Autoren, Zutaten und Inhalt separat gespeichert und anschließend zusammengesetzt werden. Diese Möglichkeit wurde aus den Überlegungen ausgeschlossen, da die Vorgehensweise wirkungslos komplex gewesen wäre. 
-Das Json-Format ermöglicht es einzelne Objekte des Json-Eintrags über verschiedene Module(zB. Express-partial-response) 
+Das Json-Format ermöglicht es einzelne Objekte des Json-Eintrags über verschiedene Module (zB. Express-partial-response) 
 
 Es wurden Überlegungen angestellt, wie über die Redis-Datenbank Kommentare zu erstellen und sie nach ihrer Identifikationsnummer (ID) zu löschen sind. Die Problematik der Kommentare, hinsichtlich einer erstellten Liste, liegt darin, dass ein einzelner Beitrag dieser Liste schwer abzurufen ist. Aufgrund dessen ist eine Hashtabelle verwendet worden.  
 Kommentare werden über die Funktionen Sadd und Hset erstellt. Sadd ist eine Tabelle, die angibt, welche Kommentare sich mit welcher ID unter den Blogeinträgen befinden. Mithilfe von Hset wird der Kommentar erstellt und erhält einen HashKeyValue. Über diesen HashKeyValue können einzelne Kommentare gelöscht werden. Mit einer einfachen Redis-Liste, hätte dies nicht funktioniert, da nicht auf einen bestimmten Kommentar ohne ID zugegriffen werden kann.
@@ -105,7 +105,7 @@ Anwendungslogik des Service:
 Die Anwendungslogik des Services wurde über das Modul Express angefertigt, welches dem Nutzer ermöglicht, einen Blogeintrag oder einen Kommentar zu erstellen und zu löschen. Der Blogeintrag kann von dem Nutzer geändert werden, sofern er diesen selber verfasst hat. Im Gegensatz zum Blogeintrag, ist dies bei einem Kommentar nicht möglich.
 
 Außerdem bietet der Service eine Such-Funktion über den Query-Parameter „search“. Es kann nach Blogeinträgen gesucht werden anhand des Titel, des Inhalts oder der Zutaten, indem man den Suchbegriff eingibt und die Datenbank nach diesem Begriff abgesucht wird. Dies geschieht über das Modul Reds (https://www.npmjs.com/package/reds). 
-Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit durchgesucht werden. Wenn ein Nutzer zB. den Begriff „Author“ eingäbe, bekäme er alle Blogeinträge zurück, da jeder Blogeintrag den Namen des Json-Objekts „Autor“ beinhaltet.
+Der Nachteil bei dem Reds-Modul besteht darin, dass die Namen der Json-Objekte mit durchgesucht werden. Wenn ein Nutzer zB. den Begriff „Author“ eingäbe, bekäme er alle Blogeinträge zurück, da jeder Blogeintrag den Namen des Json-Objekts „Author“ beinhaltet.
 Ein möglicher Lösungsvorschlag für diese Problematik wäre, die Blogeinträge aufzuteilen, sodass die Json-Objekte einzeln gespeichert werden würden.
 
 Der RESTClient ist abrufbar über
@@ -120,7 +120,7 @@ Die Rubrik „topcommented“ wurde geschrieben, konnte jedoch aus Zeitmangel ni
 
 ##2. Dokumentation des Dienstnutzers
 ###2.1 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
-Die Anwendungslogik des Dienstnutzers besteht darin, dass Blogeinträge erstellt und bearbeitet und diese kommentiert werden können. Des Weiteren können einzelne Kommentare, sowie der gesamte Blogeintrag gelöscht werden.Zusätzlich besteht die Möglichkeit Nutzer, welche Neuigkeiten oder Rezepte abonniert haben, mit Push-Nachrichten über neue Blogeinträge zu informieren. Das verwendete Modul Faye(https://www.npmjs.com/package/faye) bietet dem Nutzer die Möglichkeit, den Autor eines Blogeintrags über einen öffentlichen Chat zu kontaktieren. Die Überlegungen hierbei sind gewesen, einen interaktiven Blog zu erstellen.
+Die Anwendungslogik des Dienstnutzers besteht darin, dass Blogeinträge erstellt und bearbeitet und diese kommentiert werden können. Des Weiteren können einzelne Kommentare, sowie der gesamte Blogeintrag gelöscht werden. Zusätzlich besteht die Möglichkeit Nutzer, welche Neuigkeiten oder Rezepte abonniert haben, mit Push-Nachrichten über neue Blogeinträge zu informieren. Das verwendete Modul Faye (https://www.npmjs.com/package/faye) bietet dem Nutzer die Möglichkeit, den Autor eines Blogeintrags über einen öffentlichen Chat zu kontaktieren. Die Überlegungen hierbei sind gewesen, einen interaktiven Blog zu erstellen.
 Des Weiteren wurde für die Datenhaltung das Modul Faye-Redis als Engine verwendet, welches mit dem Redis-Server kommuniziert.
 Darüber hinaus wird das Modul Faye-Redis verwendet, um Status und Routing-Nachrichten zu speichern, die das Faye Modul mitsendet. 
 
