@@ -90,7 +90,7 @@ Zu Beginn des Projekts wurde überlegt, welche Funktionen der Blog beinhalten so
 - einen Blogeintrag kommentieren
 - Kommentar zu dem Blogeintrag löschen können
 
-Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeitet werden kann, da die Kommentarfunktion zu Diskussionen führen. Es ist nicht erwünscht, dass durch das nachträgliche Bearbeiten eines Kommentars der Sinn dieser Diskussion verfälscht und oder andere User kompromittiert werden. 
+Es ist zu beachten, dass der Kommentar lediglich gelöscht jedoch nicht bearbeitet werden kann, da die Kommentarfunktion zu Diskussionen führt. Es ist nicht erwünscht, dass durch das nachträgliche Bearbeiten eines Kommentars der Sinn dieser Diskussion verfälscht und oder andere User kompromittiert werden. 
 
 
 ###1.3 Beschreibung der Anwendungslogik und der Datenhaltung mit Überlegungen dazu
