@@ -60,12 +60,12 @@ node index.js
 ```
 
 
-Der REST-Server ist abrufbar über
+Der REST-Server ist mittel Rest-Client abrufbar über
 ```
 localhost:3000
 ```
 
-Die Dienstnutzer-Seite ist abrufbar über
+Die Dienstnutzer-Seite ist im Browser abrufbar über
 ```
 localhost:3001
 ```
