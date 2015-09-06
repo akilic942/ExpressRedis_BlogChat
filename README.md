@@ -15,8 +15,7 @@ Datei "A1.js"
 - ein Kommentar kann gelöscht werden 
 - jeder kann Blogeintrag mit den meisten Aufrufen anfragen
 - jeder kann den neusten Blogeintrag anfragen
-- jeder kann Blogeintrag mit den meisten Kommentaren anfragen
-   
+
 ####Anwendungslogik: 
 - Produktnamen können in die Suchfunktion geschrieben werden. --> es werden alle Rezepte mit diesem Produktnamen ausgegeben.
 - es wird gezählt, wie oft ein Rezept aufgerufen wurde
@@ -149,7 +148,7 @@ Des Weiteren war auch eine Schnittstelle geplant, die die Möglichkeit bieten so
 ##3 Dokumentation des Prozesses
 ###3.1 Beschreibung der Vorgehensweise und der Irrwege
 ####Vorgehensweise
-Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wäre und welche Ressourcen für diesen gebraucht werden könnten. Vorerst wurde nur an dem RESTClient gearbeitet,ohne Überlegungen an den Dienstnutzer/Dienstleister anzustellen und ohne eine Ressourcentabelle vorzufertigen, die es ermöglicht hätte strukturierter vorzugehen. So kam es zu eiem Fehler im Richardson-Maturity-Model Level 2, in unseren RESTClient, und zwar, dass bei einem GET-Aufruf ein Counter die Zugriffe mitgezählt hat. Dies kam zustande, da in Erfahrung gebracht werden wollte, welcher Blogeintrag am meisten abgerufen worden ist. Der Fehler wurde erst mit der Bearbeitung des Dienstleisters behoben. Während der Bearbeitung des Dienstnutzers, hat der Fokus in erster Linie der Präsentationslogik gegolten. An der Anwendungslogik wurde erst gearbeitet, nachdem die standardmäßigen Blogfunktionen gegeben waren.Die Ressourcen und der Dienstleister wurden fließend während der Bearbeitung der Präsentationslogik verändert. Schließlich führte dies zur Integrierung des Moduls Faye.
+Zunächst wurden Überlegungen getätigt, in wie weit ein Blog realisierbar wäre und welche Ressourcen für diesen gebraucht werden könnten. Vorerst wurde nur an dem RESTClient gearbeitet,ohne Überlegungen an den Dienstnutzer/Dienstleister anzustellen und ohne eine Ressourcentabelle vorzufertigen, die es ermöglicht hätte strukturierter vorzugehen. So kam es zu eiem Fehler im Richardson-Maturity-Model Level 2, in unseren RESTClient, und zwar, dass bei einem GET-Aufruf ein Counter die Zugriffe mitgezählt hat. Dies kam zustande, da in Erfahrung gebracht werden wollte, welcher Blogeintrag am meisten abgerufen worden ist. Der Fehler wurde erst mit der Bearbeitung des Dienstleisters behoben. Während der Bearbeitung des Dienstnutzers, hat der Fokus in erster Linie der Präsentationslogik gegolten. An der Anwendungslogik wurde erst gearbeitet, nachdem die standardmäßigen Blogfunktionen gegeben waren. Die Ressourcen und der Dienstleister wurden fließend während der Bearbeitung der Präsentationslogik verändert. Schließlich führte dies zur Integrierung des Moduls Faye.
 
 ####Fazit
 Grundsätzlich konnten alle vorüberlegten Funktionen erzielt werden, jedoch wurde erst mit dem Arbeiten am Projekt bewusst, wo die Implementierungs-Grenzen liegen. Ein strukturierteres Arbeiten, inbesondere der Vorüberlegungen zB. anhand von Ressourcen-Tabellen hätte Arbeitsschritte und Fehler erspart.
