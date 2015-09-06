@@ -137,7 +137,7 @@ localhost:3001
 
 
 ###2.3 Beschreibung der asynchron implementierten Teile der Nutzungsschnittstelle und Begründungen dazu
-Asynchrone Implemetationen des Projekts sind zum einen das Express, das Redis und das Faye Modul. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, zu lesen, zu kommentieren und zu publischen/subscriben.
+Asynchrone Implemetationen des Projekts sind zum einen das Express, das Redis und das Faye Modul. Dies ermöglicht den Nutzern gleichzeitig Blogeinträge zu erstellen, zu lesen, zu kommentieren und zu publishen/subscriben.
 
 
 ###2.4 Beschreibung der Funktionalität, die aus Zeitmangel nicht umgesetzt werden konnte
